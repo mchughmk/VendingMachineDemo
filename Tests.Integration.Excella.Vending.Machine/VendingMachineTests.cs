@@ -34,7 +34,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         {
             var change = vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(0, change);
+            Assert.AreEqual(25, change);
         }
 
         [Test]
