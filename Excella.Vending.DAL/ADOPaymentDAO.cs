@@ -37,7 +37,6 @@ namespace Excella.Vending.DAL
         public void Save(int payment)
         {
             var connection = GetConnection();
-            int id = 0;
 
             using (connection)
             {
