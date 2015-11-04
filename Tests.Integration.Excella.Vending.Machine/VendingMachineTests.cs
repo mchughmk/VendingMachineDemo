@@ -21,30 +21,14 @@ namespace Tests.Integration.Excella.Vending.Machine
             var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             vendingMachine = new VendingMachine(paymentProcessor);
+
+            ResetDBBalance();
         }
 
         [TearDown]
         public void Teardown()
         {
             transactionScope.Dispose();
-        }
-
-        [Test]
-        public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
-        {
-            var change = vendingMachine.ReleaseChange();
-
-            Assert.AreEqual(25, change);
-        }
-
-        [Test]
-        public void ReleaseChange_WhenOneCoinInserted_Expect25()
-        {
-            vendingMachine.InsertCoin();
-
-            var change = vendingMachine.ReleaseChange();
-
-            Assert.AreEqual(25, change);
         }
 
         [Test]
@@ -59,11 +43,42 @@ namespace Tests.Integration.Excella.Vending.Machine
             Assert.AreEqual(25, currentBalance);
         }
 
+        [Test]
+        public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
+        {
+            var change = vendingMachine.ReleaseChange();
+
+            Assert.AreEqual(0, change);
+        }
+
+        [Test]
+        public void ReleaseChange_WhenOneCoinInserted_Expect25()
+        {
+            vendingMachine.InsertCoin();
+
+            var change = vendingMachine.ReleaseChange();
+
+            Assert.AreEqual(25, change);
+        }
+
         private SqlConnection GetConnection()
         {
             var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
 
             return new SqlConnection(connectionString);
+        }
+
+        private void ResetDBBalance()
+        {
+            var connection = GetConnection();
+
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
         }
 
         private int GetCurrentDBBalance()

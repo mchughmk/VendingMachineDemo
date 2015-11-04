@@ -1,9 +1,9 @@
-﻿using Autofac;
-using Excella.Vending.DAL;
+﻿using Excella.Vending.DAL;
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using Excella.Vending.Web.UI.Controllers;
 using NUnit.Framework;
+using System.Data.SqlClient;
 using System.Transactions;
 using System.Web.Mvc;
 using Xania.AspNet.Simulator;
@@ -13,8 +13,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
     public class HomeControllerTests
     {
         private TransactionScope transactionScope;
-        private IContainer container;
-        private IVendingMachine vendingMachine;
         private HomeController controller;
 
         [SetUp]
@@ -22,9 +20,12 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         {
             transactionScope = new TransactionScope();
 
-            RegisterDependencies();
-            vendingMachine = container.Resolve<IVendingMachine>();
+            var paymentDAO = new ADOPaymentDAO();
+            var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
+            var vendingMachine = new VendingMachine(paymentProcessor);
             controller = new HomeController(vendingMachine);
+
+            ResetDBBalance();
         }
 
         [TearDown]
@@ -65,16 +66,24 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             Assert.AreEqual(25, ((ViewResult)result).ViewBag.Balance);
         }
 
-        private void RegisterDependencies()
+        private SqlConnection GetConnection()
         {
-            var builder = new ContainerBuilder();
+            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
 
-            //Register project abstractions
-            builder.RegisterType<VendingMachine>().As<IVendingMachine>();
-            builder.RegisterType<CoinPaymentProcessor>().As<IPaymentProcessor>();
-            builder.RegisterType<ADOPaymentDAO>().As<IPaymentDAO>();
+            return new SqlConnection(connectionString);
+        }
 
-            container = builder.Build();
+        private void ResetDBBalance()
+        {
+            var connection = GetConnection();
+
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
