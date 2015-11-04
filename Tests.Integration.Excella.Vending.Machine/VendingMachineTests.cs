@@ -40,7 +40,7 @@ namespace Tests.Integration.Excella.Vending.Machine
             vendingMachine.InsertCoin();
 
             currentBalance = GetCurrentDBBalance();
-            Assert.AreEqual(25, currentBalance);
+            Assert.AreEqual(0, currentBalance);
         }
 
         [Test]
