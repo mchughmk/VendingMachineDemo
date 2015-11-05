@@ -13,16 +13,20 @@ namespace Tests.Integration.Excella.Vending.Machine
         private VendingMachine vendingMachine;
         private TransactionScope transactionScope;
 
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            ResetDBBalance();
+        }
+
         [SetUp]
         public void Setup()
         {
             transactionScope = new TransactionScope();
 
-            var paymentDAO = new ADOPaymentDAO();
+            var paymentDAO = new EFPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             vendingMachine = new VendingMachine(paymentProcessor);
-
-            ResetDBBalance();
         }
 
         [TearDown]

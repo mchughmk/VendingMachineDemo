@@ -2,6 +2,8 @@
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
+using System;
+using System.Data.SqlClient;
 using System.Transactions;
 using TechTalk.SpecFlow;
 
@@ -23,6 +25,8 @@ namespace Tests.Acceptance.Excella.Vending.Machine
             var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             vendingMachine = new VendingMachine(paymentProcessor);
+
+            ResetDBBalance();
         }
 
         [AfterScenario]
@@ -40,13 +44,53 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         [When(@"I purchase a product")]
         public void WhenIPurchaseAProduct()
         {
-            product = vendingMachine.BuyProduct();
+            try
+            {
+                product = vendingMachine.BuyProduct();
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine("Product purchase failed: {0}", e.Message);
+            }
         }
 
         [Then(@"I should receive the product")]
         public void ThenIShouldReceiveTheProduct()
         {
             Assert.IsNotNull(product);
+        }
+
+        [Given(@"I have not inserted a quarter")]
+        public void GivenIHaveNotInsertedAQuarter()
+        {
+
+        }
+
+        [Then(@"I should not receive a product")]
+        public void ThenIShouldNotReceiveAProduct()
+        {
+            Assert.IsNull(product);
+        }
+
+
+        private SqlConnection GetConnection()
+        {
+            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
+
+            return new SqlConnection(connectionString);
+        }
+
+        private void ResetDBBalance()
+        {
+            var connection = GetConnection();
+
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

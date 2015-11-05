@@ -15,6 +15,12 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         private TransactionScope transactionScope;
         private HomeController controller;
 
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            ResetDBBalance();
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -24,8 +30,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             var vendingMachine = new VendingMachine(paymentProcessor);
             controller = new HomeController(vendingMachine);
-
-            ResetDBBalance();
         }
 
         [TearDown]

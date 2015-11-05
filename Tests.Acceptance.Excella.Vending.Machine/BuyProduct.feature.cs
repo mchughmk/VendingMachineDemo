@@ -81,6 +81,23 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I cannot buy a product if I don\'t insert money")]
+        public virtual void ICannotBuyAProductIfIDonTInsertMoney()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I cannot buy a product if I don\'t insert money", ((string[])(null)));
+#line 11
+this.ScenarioSetup(scenarioInfo);
+#line 12
+ testRunner.Given("I have not inserted a quarter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 13
+ testRunner.When("I purchase a product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 14
+ testRunner.Then("I should not receive a product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
