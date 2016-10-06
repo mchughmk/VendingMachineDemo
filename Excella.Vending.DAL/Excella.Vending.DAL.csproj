@@ -53,6 +53,7 @@
     <Compile Include="EFPaymentDAO.cs" />
     <Compile Include="FakePaymentDAO.cs" />
     <Compile Include="IPaymentDAO.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VendingMachineContext.cs" />
