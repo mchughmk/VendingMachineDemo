@@ -10,7 +10,7 @@
   <IgnoreThisComponentCompletely>false</IgnoreThisComponentCompletely>
   <RunPreBuildEvents>false</RunPreBuildEvents>
   <RunPostBuildEvents>false</RunPostBuildEvents>
-  <PreviouslyBuiltSuccessfully>false</PreviouslyBuiltSuccessfully>
+  <PreviouslyBuiltSuccessfully>true</PreviouslyBuiltSuccessfully>
   <TrackFileDependencies>false</TrackFileDependencies>
   <InstrumentAssembly>true</InstrumentAssembly>
   <PreventSigningOfAssembly>false</PreventSigningOfAssembly>
@@ -18,9 +18,9 @@
   <DetectStackOverflow>true</DetectStackOverflow>
   <IncludeStaticReferencesInWorkspace>true</IncludeStaticReferencesInWorkspace>
   <DefaultTestTimeout>60000</DefaultTestTimeout>
-  <UseBuildConfiguration />
-  <UseBuildPlatform />
-  <ProxyProcessPath />
+  <UseBuildConfiguration></UseBuildConfiguration>
+  <UseBuildPlatform></UseBuildPlatform>
+  <ProxyProcessPath></ProxyProcessPath>
   <UseCPUArchitecture>AutoDetect</UseCPUArchitecture>
   <MSTestThreadApartmentState>STA</MSTestThreadApartmentState>
   <BuildProcessArchitecture>x86</BuildProcessArchitecture>
