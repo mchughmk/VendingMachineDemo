@@ -63,7 +63,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         [Given(@"I have not inserted a quarter")]
         public void GivenIHaveNotInsertedAQuarter()
         {
-
+            // Not calling insert coin
         }
 
         [Then(@"I should not receive a product")]
