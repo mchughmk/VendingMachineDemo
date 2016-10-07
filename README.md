@@ -4,17 +4,13 @@ This demo shows a working example of a small project with unit tests at each lev
 # How to Run this Application
 
 ## Prerequisites
+To run the project, you'll need to have some basic items set up or installed.
 
-### The Basics
-* You'll need an internet connection so that you can restore nuget packages.
-* You'll need Visual Studio to run the examples
-
-### IIS 
-Because the acceptance tests cannot run at the same time the app is running in IIS express, we have to deploy to IIS itself. Therefore, you'll need to have IIS Installed.
-
-### SQL Server
-The acceptance tests and web application use a database, which this example assumes is a SQL Server database. 
-
+* **Internet.** You'll need an internet connection so that you can restore nuget packages.
+* **Visual Studio**. You'll need Visual Studio to run the examples
+* **IIS**. Because the acceptance tests cannot run at the same time the app is running in IIS express, we have to deploy to IIS itself. Therefore, you'll need to have IIS Installed.
+* **SQL Server**. The acceptance tests and web application use a database, which this example assumes is a SQL Server database.
+ 
 ## Getting Started
 
 ### Creating the IIS Vrtual Directory
