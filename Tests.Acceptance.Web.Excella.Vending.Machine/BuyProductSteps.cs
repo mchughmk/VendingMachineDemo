@@ -20,10 +20,9 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [AfterScenario]
         public void Teardown()
         {
-            _homePage.Close();
         }
 
-        [When(@"I insert a Quarter")]
+        [When(@"I insert a quarter")]
         public void WhenIInsertAQuarter()
         {
             InsertQuarter();

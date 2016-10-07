@@ -22,7 +22,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
             transactionScope = new TransactionScope();
 
             product = null;
-            var paymentDAO = new EFPaymentDAO();
+            var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             vendingMachine = new VendingMachine(paymentProcessor);
 
