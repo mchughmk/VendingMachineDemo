@@ -35,13 +35,13 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             return button;
         }
 
-        public string Balance()
+        public int Balance()
         {
             try
             {
-                return _browser.FindElement(By.Id("balanceAmount")).Text;
+                return int.Parse(_browser.FindElement(By.Id("balanceAmount")).Text);
             }
-            catch (StaleElementReferenceException ex)
+            catch (StaleElementReferenceException)
             {
                 return Balance();
             }
