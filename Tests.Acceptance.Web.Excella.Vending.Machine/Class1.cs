@@ -17,7 +17,13 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         {
             _browser = new ChromeDriver();
         }
-        const string HOME_PAGE_URL = "http://localhost:8484/";
+
+        public void Close()
+        {
+            _browser.Close();
+            _browser.Dispose();
+        }
+        const string HOME_PAGE_URL = "http://localhost/Excella.Vending.Web.UI";
         public void Go()
         {
             _browser.Navigate().GoToUrl(HOME_PAGE_URL);

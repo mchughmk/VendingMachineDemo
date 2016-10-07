@@ -3,9 +3,9 @@
 }
 
 <h3>Vending Machine</h3>
-
-<form action="~/Home/InsertCoin" method="post">
+@using (Html.BeginForm("InsertCoin", "Home", FormMethod.Post))
+{
     <p><input id="insertCoin" type="submit" value="Insert Coin" /></p>
-</form>
+}
+<div><p id="totalAmount">Balance: @ViewBag.Balance cents</p></div>
 
-<p><div id="totalAmount">Balance: @ViewBag.Balance cents</div></p>
