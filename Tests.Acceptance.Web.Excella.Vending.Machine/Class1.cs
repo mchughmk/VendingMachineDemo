@@ -37,8 +37,14 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         public string Balance()
         {
-            IWebElement balanceDiv = _browser.FindElement(By.Id("totalAmount"));
-            return balanceDiv.Text;
+            try
+            {
+                return _browser.FindElement(By.Id("totalAmount")).Text;
+            }
+            catch (StaleElementReferenceException ex)
+            {
+                return Balance();
+            }
         }
     }
 }
