@@ -74,7 +74,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.When("I insert a Quarter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 8
- testRunner.Then("The balance should be 25 cents", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The balance should increase by 25 cents", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

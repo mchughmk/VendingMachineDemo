@@ -39,7 +39,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         {
             try
             {
-                return _browser.FindElement(By.Id("totalAmount")).Text;
+                return _browser.FindElement(By.Id("balanceAmount")).Text;
             }
             catch (StaleElementReferenceException ex)
             {

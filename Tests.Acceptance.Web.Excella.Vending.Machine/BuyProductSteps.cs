@@ -1,4 +1,6 @@
 ﻿using System.Data.SqlClient;
+using Excella.Vending.DAL;
+using Excella.Vending.Domain;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
@@ -9,10 +11,11 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
     {
 
         private HomePage _homePage;
+        private int _previousBalance;
 
         [BeforeScenario]
         public void Setup()
-        {
+        { 
             _homePage = new HomePage();
             _homePage.Go();
         }
@@ -29,16 +32,17 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             InsertQuarter();
         }
 
-        [Then(@"The balance should be 25 cents")]
-        public void TheBalanceShouldBe25Cents()
+        [Then(@"The balance should increase by 25 cents")]
+        public void TheBalanceShouldIncreaseBy25Cents()
         {
-            var balance = _homePage.Balance();
+            var balance = int.Parse(_homePage.Balance());
 
-            Assert.That(balance, Does.Contain("25"));
-            Assert.That(balance, Does.Contain("cents"));
+            Assert.That(balance, Is.GreaterThan(_previousBalance));
+            Assert.That(balance, Is.EqualTo(_previousBalance + 25));
         }
         private void InsertQuarter()
         {
+            _previousBalance = int.Parse(_homePage.Balance());
             _homePage.InsertCoinButton().Click();
         }
 
