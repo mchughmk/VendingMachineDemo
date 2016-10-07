@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.IE;
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
 {
     public class HomePage
     {
-        private readonly ChromeDriver _browser;
+        private readonly IWebDriver _browser;
 
 
         public HomePage()
