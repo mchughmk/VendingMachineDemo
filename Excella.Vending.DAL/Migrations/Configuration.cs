@@ -12,7 +12,7 @@ namespace Excella.Vending.DAL.Migrations
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Excella.Vending.DAL.VendingMachineContext context)
+        protected override void Seed(DAL.VendingMachineContext context)
         {
             //  This method will be called after migrating to the latest version.
 
