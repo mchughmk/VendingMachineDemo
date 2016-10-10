@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using Excella.Vending.DAL.Models;
 
 namespace Excella.Vending.DAL.Migrations
@@ -13,11 +14,14 @@ namespace Excella.Vending.DAL.Migrations
 
         protected override void Seed(VendingMachineContext context)
         {
-            context.Payments.AddOrUpdate(p => new Payment
+            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Payment] ON");
+            var seedPayment = new Payment
             {
-                ID = 1,
+                Id = 1,
                 Value = 0
-            });
+            };
+            context.Payments.AddOrUpdate(p => p.Id, seedPayment);
+            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Payment] OFF");
         }
     }
 }

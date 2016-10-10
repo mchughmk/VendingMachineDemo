@@ -8,7 +8,7 @@ namespace Excella.Vending.DAL
 
         public int Retrieve()
         {
-            var payment = context.Payments.Where(p => p.ID == 1).FirstOrDefault();
+            var payment = context.Payments.Where(p => p.Id == 1).FirstOrDefault();
 
             if (payment != null)
             {
@@ -22,7 +22,7 @@ namespace Excella.Vending.DAL
 
         public void Save(int amount)
         {
-            var payment = context.Payments.Where(p => p.ID == 1).FirstOrDefault();
+            var payment = context.Payments.Where(p => p.Id == 1).FirstOrDefault();
 
             if (payment != null)
             {
