@@ -2,14 +2,14 @@ namespace Excella.Vending.DAL.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Excella.Vending.DAL.VendingMachineContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<VendingMachineContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(DAL.VendingMachineContext context)
+        protected override void Seed(VendingMachineContext context)
         {
             //  This method will be called after migrating to the latest version.
 
