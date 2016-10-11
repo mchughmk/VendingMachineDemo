@@ -1,8 +1,10 @@
-﻿namespace Excella.Vending.DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Excella.Vending.DAL.Models
 {
     public class Payment
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public int Value { get; set; }
     }
 }
