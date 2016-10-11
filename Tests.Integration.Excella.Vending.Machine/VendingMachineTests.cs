@@ -16,7 +16,6 @@ namespace Tests.Integration.Excella.Vending.Machine
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            ResetDBBalance();
         }
 
         [SetUp]
@@ -70,19 +69,6 @@ namespace Tests.Integration.Excella.Vending.Machine
             var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
 
             return new SqlConnection(connectionString);
-        }
-
-        private void ResetDBBalance()
-        {
-            var connection = GetConnection();
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
-                connection.Open();
-
-                command.ExecuteNonQuery();
-            }
         }
 
         private int GetCurrentDBBalance()
