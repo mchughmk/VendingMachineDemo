@@ -1,11 +1,3 @@
-using System.Data.Entity;
-using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Transactions;
-using Excella.Vending.DAL.Models;
-
 namespace Excella.Vending.DAL.Migrations
 {
     using System.Data.Entity.Migrations;
