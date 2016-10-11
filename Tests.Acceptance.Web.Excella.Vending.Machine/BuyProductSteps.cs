@@ -44,15 +44,24 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             var applicationPath = GetApplicationPath(APPLICATION_NAME);
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
 
-            var iisProcess = new Process();
-            iisProcess.StartInfo.FileName = programFiles + @"\IIS Express\iisexpress.exe";
-            iisProcess.StartInfo.Arguments = string.Format("/path:\"{0}\" /port:{1}", applicationPath, IIS_PORT);
+            var startInfoFileName = programFiles + @"\IIS Express\iisexpress.exe";
+            var startInfoArguments = $"/path:\"{applicationPath}\" /port:{IIS_PORT}";
+
+            var iisProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = startInfoFileName,
+                    Arguments = startInfoArguments
+                }
+            };
             iisProcess.Start();
         }
 
         private static string GetApplicationPath(string applicationName)
         {
-            var solutionFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)));
+            var solutionFolder = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            // ReSharper disable once AssignNullToNotNullAttribute -- test will fail if it's null.
             return Path.Combine(solutionFolder, applicationName);
         }
 
