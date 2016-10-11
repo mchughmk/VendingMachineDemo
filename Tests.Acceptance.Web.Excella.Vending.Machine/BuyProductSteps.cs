@@ -1,14 +1,60 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using NUnit.Framework;
 using TechTalk.SpecFlow;
+// ReSharper disable UnusedMember.Global -- test methods are said to be unused which isn't correct. -SK
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
 {
     [Binding]
     public class BuyProductSteps
     {
-
+        private const int IIS_PORT = 8484;
+        private const string APPLICATION_NAME = "Excella.Vending.Web.UI"; //TODO
         private HomePage _homePage;
         private int _previousBalance;
+
+        [BeforeFeature]
+        public static void BeforeFeature()
+        {
+            StartIIS();
+        }
+
+        [AfterFeature]
+        public static void AfterFeature()
+        {
+            StopIIS();
+        }
+
+        private static void StopIIS()
+        {
+            var localIISExpressProcesses = Process.GetProcessesByName("iisexpress");
+            foreach (var iisExpressProcess in localIISExpressProcesses)
+            {
+                if (!iisExpressProcess.HasExited)
+                {
+                    iisExpressProcess.Kill();
+                }
+            }
+        }
+
+        private static void StartIIS()
+        {
+            var applicationPath = GetApplicationPath(APPLICATION_NAME);
+            var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
+            var iisProcess = new Process();
+            iisProcess.StartInfo.FileName = programFiles + @"\IIS Express\iisexpress.exe";
+            iisProcess.StartInfo.Arguments = string.Format("/path:\"{0}\" /port:{1}", applicationPath, IIS_PORT);
+            iisProcess.Start();
+        }
+
+        private static string GetApplicationPath(string applicationName)
+        {
+            var solutionFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)));
+            return Path.Combine(solutionFolder, applicationName);
+        }
 
         [BeforeScenario]
         public void Setup()
