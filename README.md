@@ -1,3 +1,5 @@
+![Build Status](https://ci.appveyor.com/api/projects/status/5d629m3s2rm70wxx?svg=true)
+
 # Welcome to the Excella Vending Machine demo!
 This demo shows a working example of a small project with unit tests at each level.
 
