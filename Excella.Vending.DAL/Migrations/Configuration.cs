@@ -1,31 +1,33 @@
 namespace Excella.Vending.DAL.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Excella.Vending.DAL.VendingMachineContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<VendingMachineContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Excella.Vending.DAL.VendingMachineContext context)
+        protected override void Seed(VendingMachineContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            // Using SQL text here because EF's AddOrUpdate() couldn't make use of IDENTITY_INSERT Without being in a distinct
+            // Transaction scope, which appeared to require MSDTC, which is overkill. 
+            const string SQL_TO_ADD_OR_UPDATE_ID_ROW = @"
+                BEGIN
+	                IF EXISTS (select * from Payment where id = 1)
+	                  BEGIN
+		                UPDATE PAYMENT SET Value = 0 WHERE Id = 1
+	                  END
+	                ELSE
+		                BEGIN
+		                    SET IDENTITY_INSERT [dbo].[Payment] ON
+		                    INSERT INTO Payment (Id, Value) VALUES (1,0)
+		                    SET IDENTITY_INSERT [dbo].[Payment] OFF
+		                END
+	                END";
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            context.Database.ExecuteSqlCommand(SQL_TO_ADD_OR_UPDATE_ID_ROW);
         }
     }
 }
