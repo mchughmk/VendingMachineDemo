@@ -24,4 +24,9 @@
   <UseCPUArchitecture>AutoDetect</UseCPUArchitecture>
   <MSTestThreadApartmentState>STA</MSTestThreadApartmentState>
   <BuildProcessArchitecture>x86</BuildProcessArchitecture>
+  <IgnoredTests>
+    <NamedTestSelector>
+      <TestName>Tests.Acceptance.Web.Excella.Vending.Machine.BuyProductFeature.BalanceIsUpdatedOnCoinInsert</TestName>
+    </NamedTestSelector>
+  </IgnoredTests>
 </ProjectConfiguration>
