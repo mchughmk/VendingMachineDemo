@@ -3,7 +3,6 @@ using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using Excella.Vending.Web.UI.Controllers;
 using NUnit.Framework;
-using System.Data.SqlClient;
 using System.Transactions;
 using System.Web.Mvc;
 using Xania.AspNet.Simulator;
@@ -59,7 +58,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
 
             // Act
             var result = action.GetActionResult();
-            var context = action.GetActionExecutingContext();
 
             // Assert
             Assert.IsInstanceOf<RedirectToRouteResult>(result);
@@ -67,13 +65,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             action = controller.Action(c => c.Index());
             result = action.GetActionResult();
             Assert.AreEqual(25, ((ViewResult)result).ViewBag.Balance);
-        }
-
-        private SqlConnection GetConnection()
-        {
-            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
-
-            return new SqlConnection(connectionString);
         }
     }
 }

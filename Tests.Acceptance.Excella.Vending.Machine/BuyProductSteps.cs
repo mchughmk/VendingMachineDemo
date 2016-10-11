@@ -3,7 +3,6 @@ using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
 using System;
-using System.Data.SqlClient;
 using System.Transactions;
 using TechTalk.SpecFlow;
 
@@ -68,14 +67,6 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         public void ThenIShouldNotReceiveAProduct()
         {
             Assert.IsNull(product);
-        }
-
-
-        private SqlConnection GetConnection()
-        {
-            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
-
-            return new SqlConnection(connectionString);
         }
     }
 }
