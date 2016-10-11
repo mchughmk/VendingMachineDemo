@@ -18,13 +18,12 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            ResetDBBalance();
         }
 
         [SetUp]
         public void Setup()
         {
-            transactionScope = new TransactionScope();
+            transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew);
 
             var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
@@ -75,19 +74,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
 
             return new SqlConnection(connectionString);
-        }
-
-        private void ResetDBBalance()
-        {
-            var connection = GetConnection();
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
-                connection.Open();
-
-                command.ExecuteNonQuery();
-            }
         }
     }
 }

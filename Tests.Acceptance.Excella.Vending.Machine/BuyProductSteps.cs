@@ -19,14 +19,12 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         [BeforeScenario]
         public void Setup()
         {
-            transactionScope = new TransactionScope();
+            transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew);
 
             product = null;
             var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             vendingMachine = new VendingMachine(paymentProcessor);
-
-            ResetDBBalance();
         }
 
         [AfterScenario]
@@ -78,19 +76,6 @@ namespace Tests.Acceptance.Excella.Vending.Machine
             var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
 
             return new SqlConnection(connectionString);
-        }
-
-        private void ResetDBBalance()
-        {
-            var connection = GetConnection();
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
-                connection.Open();
-
-                command.ExecuteNonQuery();
-            }
         }
     }
 }
