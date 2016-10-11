@@ -38,7 +38,6 @@ namespace Tests.Integration.Excella.Vending.Machine
         public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
             var originalBalance = GetCurrentDBBalance();
-            Assert.AreEqual(0, originalBalance);
 
             _vendingMachine.InsertCoin();
 
