@@ -11,7 +11,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
     public class BuyProductSteps
     {
         private const int IIS_PORT = 8484;
-        private const string APPLICATION_NAME = "Excella.Vending.Web.UI"; //TODO
+        private const string APPLICATION_NAME = "Excella.Vending.Web.UI";
         private HomePage _homePage;
         private int _previousBalance;
 
@@ -58,7 +58,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         [BeforeScenario]
         public void Setup()
-        { 
+        {
             _homePage = new HomePage();
             _homePage.Go();
         }
