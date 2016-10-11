@@ -10,8 +10,8 @@ namespace Tests.Integration.Excella.Vending.Machine
 {
     public class VendingMachineTests
     {
-        private VendingMachine vendingMachine;
-        private TransactionScope transactionScope;
+        private VendingMachine _vendingMachine;
+        private TransactionScope _transactionScope;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
@@ -21,17 +21,17 @@ namespace Tests.Integration.Excella.Vending.Machine
         [SetUp]
         public void Setup()
         {
-            transactionScope = new TransactionScope();
+            _transactionScope = new TransactionScope();
 
             var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
-            vendingMachine = new VendingMachine(paymentProcessor);
+            _vendingMachine = new VendingMachine(paymentProcessor);
         }
 
         [TearDown]
         public void Teardown()
         {
-            transactionScope.Dispose();
+            _transactionScope.Dispose();
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace Tests.Integration.Excella.Vending.Machine
             var currentBalance = GetCurrentDBBalance();
             Assert.AreEqual(0, currentBalance);
 
-            vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
             currentBalance = GetCurrentDBBalance();
             Assert.AreEqual(25, currentBalance);
@@ -49,7 +49,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
         {
-            var change = vendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(0, change);
         }
@@ -57,9 +57,9 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void ReleaseChange_WhenOneCoinInserted_Expect25()
         {
-            vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            var change = vendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
         }
