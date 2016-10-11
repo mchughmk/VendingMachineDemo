@@ -10,47 +10,46 @@ namespace Tests.Integration.Excella.Vending.Machine
 {
     public class VendingMachineTests
     {
-        private VendingMachine vendingMachine;
-        private TransactionScope transactionScope;
+        private VendingMachine _vendingMachine;
+        private TransactionScope _transactionScope;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            ResetDBBalance();
         }
 
         [SetUp]
         public void Setup()
         {
-            transactionScope = new TransactionScope();
+            _transactionScope = new TransactionScope();
 
             var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
-            vendingMachine = new VendingMachine(paymentProcessor);
+            _vendingMachine = new VendingMachine(paymentProcessor);
         }
 
         [TearDown]
         public void Teardown()
         {
-            transactionScope.Dispose();
+            _transactionScope.Dispose();
         }
 
         [Test]
-        public void InsertCoin_WhenOneCoinInserted_Expect25()
+        public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
+            var originalBalance = GetCurrentDBBalance();
+            Assert.AreEqual(0, originalBalance);
+
+            _vendingMachine.InsertCoin();
+
             var currentBalance = GetCurrentDBBalance();
-            Assert.AreEqual(0, currentBalance);
-
-            vendingMachine.InsertCoin();
-
-            currentBalance = GetCurrentDBBalance();
-            Assert.AreEqual(25, currentBalance);
+            Assert.AreEqual(currentBalance, originalBalance + 25);
         }
 
         [Test]
         public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
         {
-            var change = vendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(0, change);
         }
@@ -58,9 +57,9 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void ReleaseChange_WhenOneCoinInserted_Expect25()
         {
-            vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            var change = vendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
         }
@@ -70,19 +69,6 @@ namespace Tests.Integration.Excella.Vending.Machine
             var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
 
             return new SqlConnection(connectionString);
-        }
-
-        private void ResetDBBalance()
-        {
-            var connection = GetConnection();
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
-                connection.Open();
-
-                command.ExecuteNonQuery();
-            }
         }
 
         private int GetCurrentDBBalance()

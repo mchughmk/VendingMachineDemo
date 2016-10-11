@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TechTalk.SpecFlow;
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
@@ -14,7 +13,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [BeforeScenario]
         public void Setup()
         { 
-            ResetDBBalance();
             _homePage = new HomePage();
             _homePage.Go();
         }
@@ -80,27 +78,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         public void ThenIShouldNotReceiveAProduct()
         {
             //Assert.IsNull(product);
-        }
-
-
-        private SqlConnection GetConnection()
-        {
-            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
-
-            return new SqlConnection(connectionString);
-        }
-
-        private void ResetDBBalance()
-        {
-            var connection = GetConnection();
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
-                connection.Open();
-
-                command.ExecuteNonQuery();
-            }
         }
     }
 }
