@@ -1,4 +1,9 @@
+using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
+using System.Transactions;
 using Excella.Vending.DAL.Models;
 
 namespace Excella.Vending.DAL.Migrations
@@ -14,14 +19,23 @@ namespace Excella.Vending.DAL.Migrations
 
         protected override void Seed(VendingMachineContext context)
         {
-            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Payment] ON");
-            var seedPayment = new Payment
-            {
-                Id = 1,
-                Value = 0
-            };
-            context.Payments.AddOrUpdate(p => p.Id, seedPayment);
-            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Payment] OFF");
+            // Using SQL text here because EF's AddOrUpdate() couldn't make use of IDENTITY_INSERT Without being in a distinct
+            // Transaction scope, which appeared to require MSDTC, which is overkill. 
+            const string SQL_TO_ADD_OR_UPDATE_ID_ROW = @"
+                BEGIN
+	                IF EXISTS (select * from Payment where id = 1)
+	                  BEGIN
+		                UPDATE PAYMENT SET Value = 0 WHERE Id = 1
+	                  END
+	                ELSE
+		                BEGIN
+		                    SET IDENTITY_INSERT [dbo].[Payment] ON
+		                    INSERT INTO Payment (Id, Value) VALUES (1,0)
+		                    SET IDENTITY_INSERT [dbo].[Payment] OFF
+		                END
+	                END";
+
+            context.Database.ExecuteSqlCommand(SQL_TO_ADD_OR_UPDATE_ID_ROW);
         }
     }
 }
