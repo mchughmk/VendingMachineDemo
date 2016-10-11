@@ -25,7 +25,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             _browser.Close();
             _browser.Dispose();
         }
-        const string HOME_PAGE_URL = "http://localhost/Excella.Vending.Web.UI";
+        const string HOME_PAGE_URL = "http://localhost:8484/";
         public void Go()
         {
             _browser.Navigate().GoToUrl(HOME_PAGE_URL);

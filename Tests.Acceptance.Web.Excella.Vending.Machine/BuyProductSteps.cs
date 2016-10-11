@@ -1,18 +1,74 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using NUnit.Framework;
 using TechTalk.SpecFlow;
+// ReSharper disable UnusedMember.Global -- test methods are said to be unused which isn't correct. -SK
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
 {
     [Binding]
     public class BuyProductSteps
     {
-
+        private const int IIS_PORT = 8484;
+        private const string APPLICATION_NAME = "Excella.Vending.Web.UI";
         private HomePage _homePage;
         private int _previousBalance;
 
+        [BeforeFeature]
+        public static void BeforeFeature()
+        {
+            StartIIS();
+        }
+
+        [AfterFeature]
+        public static void AfterFeature()
+        {
+            StopIIS();
+            //TODO: Release change to put the value back for the sake of other tests.
+        }
+
+        private static void StopIIS()
+        {
+            var localIISExpressProcesses = Process.GetProcessesByName("iisexpress");
+            foreach (var iisExpressProcess in localIISExpressProcesses)
+            {
+                if (!iisExpressProcess.HasExited)
+                {
+                    iisExpressProcess.Kill();
+                }
+            }
+        }
+
+        private static void StartIIS()
+        {
+            var applicationPath = GetApplicationPath(APPLICATION_NAME);
+            var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
+            var startInfoFileName = programFiles + @"\IIS Express\iisexpress.exe";
+            var startInfoArguments = $"/path:\"{applicationPath}\" /port:{IIS_PORT}";
+
+            var iisProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = startInfoFileName,
+                    Arguments = startInfoArguments
+                }
+            };
+            iisProcess.Start();
+        }
+
+        private static string GetApplicationPath(string applicationName)
+        {
+            var solutionFolder = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            // ReSharper disable once AssignNullToNotNullAttribute -- test will fail if it's null.
+            return Path.Combine(solutionFolder, applicationName);
+        }
+
         [BeforeScenario]
         public void Setup()
-        { 
+        {
             _homePage = new HomePage();
             _homePage.Go();
         }

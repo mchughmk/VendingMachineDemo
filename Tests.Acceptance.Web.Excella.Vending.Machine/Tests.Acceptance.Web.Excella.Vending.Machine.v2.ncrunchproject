@@ -25,6 +25,8 @@
   <MSTestThreadApartmentState>STA</MSTestThreadApartmentState>
   <BuildProcessArchitecture>x86</BuildProcessArchitecture>
   <IgnoredTests>
-    <AllTestsSelector />
+    <NamedTestSelector>
+      <TestName>Tests.Acceptance.Web.Excella.Vending.Machine.BuyProductFeature.BalanceIsUpdatedOnCoinInsert</TestName>
+    </NamedTestSelector>
   </IgnoredTests>
 </ProjectConfiguration>
