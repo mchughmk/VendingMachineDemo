@@ -25,6 +25,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         public static void AfterFeature()
         {
             StopIIS();
+            //TODO: Release change to put the value back for the sake of other tests.
         }
 
         private static void StopIIS()
