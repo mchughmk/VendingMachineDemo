@@ -13,8 +13,8 @@ namespace Tests.Integration.Excella.Vending.Machine
         private VendingMachine _vendingMachine;
         private TransactionScope _transactionScope;
 
-        [TestFixtureSetUp]
-        public void FixtureSetup()
+        [OneTimeSetUp]
+        public void FixtureSetup() // Leaving this to demonstrate that it's usually called FixtureSerup
         {
         }
 
