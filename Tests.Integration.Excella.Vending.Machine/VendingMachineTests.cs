@@ -14,7 +14,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         private TransactionScope _transactionScope;
 
         [OneTimeSetUp]
-        public void FixtureSetup()
+        public void FixtureSetup() // Leaving this to demonstrate that it's usually called FixtureSerup
         {
         }
 
