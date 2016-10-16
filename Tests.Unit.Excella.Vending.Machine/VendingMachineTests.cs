@@ -39,11 +39,11 @@ namespace Tests.Unit.Excella.Vending.Machine
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void BuyProduct_WhenNoMoneyInserted_ExpectException()
         {
             paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
-            var product = vendingMachine.BuyProduct();
+
+            Assert.That(()=> vendingMachine.BuyProduct(), Throws.InvalidOperationException);
         }
 
         [Test]

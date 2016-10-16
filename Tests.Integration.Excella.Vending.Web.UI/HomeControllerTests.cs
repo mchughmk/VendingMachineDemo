@@ -14,7 +14,7 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         private TransactionScope _transactionScope;
         private HomeController _controller;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
         }
