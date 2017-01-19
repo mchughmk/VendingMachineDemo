@@ -24,7 +24,7 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         {
             _transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew);
 
-            var paymentDAO = new ADOPaymentDAO();
+            var paymentDAO = new ADOPaymentDAO(_transactionScope);
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             var vendingMachine = new VendingMachine(paymentProcessor);
             _controller = new HomeController(vendingMachine);

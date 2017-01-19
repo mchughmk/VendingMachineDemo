@@ -1,44 +1,56 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Excella.Vending.DAL
 {
     public class ADOPaymentDAO : IPaymentDAO
     {
+        private TransactionScope _transactionScope;
+        public ADOPaymentDAO()
+        {
+            _transactionScope = new TransactionScope();
+        }
+
+        public ADOPaymentDAO(TransactionScope transactionScope)
+        {
+            _transactionScope = transactionScope;
+        }
         public int Retrieve()
         {
-            var connection = GetConnection();
-            int payment = 0;
-
-            using (connection)
+            using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
-                connection.Open();
+                int payment = 0;
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (connection)
                 {
-                    while (reader.Read())
+                    SqlCommand command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
                     {
-                        payment = reader.GetInt32(0);
+                        while (reader.Read())
+                        {
+                            payment = reader.GetInt32(0);
+                        }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("No rows found.");
-                }
-                reader.Close();
-            }
+                    else
+                    {
+                        Console.WriteLine("No rows found.");
+                    }
+                    reader.Close();
 
-            return payment;
+                }
+                return payment;
+            }
         }
 
         public void Save(int payment)
         {
-            var connection = GetConnection();
-
-            using (connection)
+            using (var connection = GetConnection())
             {
                 SqlCommand command = new SqlCommand(string.Format("UPDATE Payment SET Value = Value + {0} WHERE ID = 1;", payment), connection);
                 connection.Open();
