@@ -66,9 +66,9 @@ namespace Excella.Vending.DAL
 
         private SqlConnection GetConnection()
         {
-            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
+            string connectionString = ConfigurationManager.ConnectionStrings["VendingMachineContext"]?.ConnectionString;
 
-            return new SqlConnection(connectionString);
+            return new SqlConnection(connectionString ?? "Server=.;Database=VendingMachine;Trusted_Connection=True;");
         }
     }
 }
