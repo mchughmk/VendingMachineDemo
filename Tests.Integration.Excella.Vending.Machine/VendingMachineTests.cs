@@ -2,8 +2,6 @@
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
-using System;
-using System.Data.SqlClient;
 using System.Transactions;
 
 namespace Tests.Integration.Excella.Vending.Machine
@@ -23,7 +21,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         {
             _transactionScope = new TransactionScope();
 
-            var paymentDAO = new ADOPaymentDAO();
+            var paymentDAO = new ADOPaymentDAO(_transactionScope);
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             _vendingMachine = new VendingMachine(paymentProcessor);
         }
@@ -37,11 +35,12 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
-            var originalBalance = GetCurrentDBBalance();
+
+            var originalBalance = _vendingMachine.Balance;
 
             _vendingMachine.InsertCoin();
 
-            var currentBalance = GetCurrentDBBalance();
+            var currentBalance = _vendingMachine.Balance;
             Assert.AreEqual(currentBalance, originalBalance + 25);
         }
 
@@ -61,42 +60,6 @@ namespace Tests.Integration.Excella.Vending.Machine
             var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
-        }
-
-        private SqlConnection GetConnection()
-        {
-            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
-
-            return new SqlConnection(connectionString);
-        }
-
-        private int GetCurrentDBBalance()
-        {
-            var connection = GetConnection();
-            int payment = 0;
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        payment = reader.GetInt32(0);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No rows found.");
-                }
-                reader.Close();
-            }
-
-            return payment;
         }
     }
 }
