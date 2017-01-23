@@ -8,21 +8,21 @@ namespace Tests.Unit.Excella.Vending.Domain
     [TestFixture]
     public class CoinPaymentProcessorTests
     {
-        CoinPaymentProcessor paymentProcessor;
-        Mock<IPaymentDAO> paymentDAO;
+        CoinPaymentProcessor _paymentProcessor;
+        Mock<IPaymentDAO> _paymentDAO;
 
         [SetUp]
         public void SetUp()
         {
-            paymentDAO = new Mock<IPaymentDAO>();
-            paymentProcessor = new CoinPaymentProcessor(paymentDAO.Object);
+            _paymentDAO = new Mock<IPaymentDAO>();
+            _paymentProcessor = new CoinPaymentProcessor(_paymentDAO.Object);
         }
 
         [Test]
         public void Payment_WhenNoMoney_ExpectBalanceIsZero()
         {
-            paymentDAO.Setup(d => d.Retrieve()).Returns(0);
-            var balance = paymentProcessor.Payment;
+            _paymentDAO.Setup(d => d.Retrieve()).Returns(0);
+            var balance = _paymentProcessor.Payment;
 
             Assert.AreEqual(0, balance);
         }
@@ -30,8 +30,8 @@ namespace Tests.Unit.Excella.Vending.Domain
         [Test]
         public void Payment_WhenMoney_ExpectBalanceIsNotZero()
         {
-            paymentDAO.Setup(d => d.Retrieve()).Returns(25);
-            var balance = paymentProcessor.Payment;
+            _paymentDAO.Setup(d => d.Retrieve()).Returns(25);
+            var balance = _paymentProcessor.Payment;
 
             Assert.AreEqual(25, balance);
         }
@@ -39,8 +39,8 @@ namespace Tests.Unit.Excella.Vending.Domain
         [Test]
         public void IsPaymentMade_WhenNoMoney_ExpectFalse()
         {
-            paymentDAO.Setup(d => d.Retrieve()).Returns(0);
-            var actual = paymentProcessor.IsPaymentMade();
+            _paymentDAO.Setup(d => d.Retrieve()).Returns(0);
+            var actual = _paymentProcessor.IsPaymentMade();
 
             Assert.AreEqual(false, actual);
         }
@@ -48,8 +48,8 @@ namespace Tests.Unit.Excella.Vending.Domain
         [Test]
         public void IsPaymentMade_WhenLessThan50Cents_ExpectFalse()
         {
-            paymentDAO.Setup(d => d.Retrieve()).Returns(25);
-            var actual = paymentProcessor.IsPaymentMade();
+            _paymentDAO.Setup(d => d.Retrieve()).Returns(25);
+            var actual = _paymentProcessor.IsPaymentMade();
 
             Assert.AreEqual(false, actual);
         }
@@ -57,8 +57,8 @@ namespace Tests.Unit.Excella.Vending.Domain
         [Test]
         public void IsPaymentMade_When50Cents_ExpectTrue()
         {
-            paymentDAO.Setup(d => d.Retrieve()).Returns(50);
-            var actual = paymentProcessor.IsPaymentMade();
+            _paymentDAO.Setup(d => d.Retrieve()).Returns(50);
+            var actual = _paymentProcessor.IsPaymentMade();
 
             Assert.AreEqual(true, actual);
         }
@@ -66,8 +66,8 @@ namespace Tests.Unit.Excella.Vending.Domain
         [Test]
         public void IsPaymentMade_WhenGreaterThan50Cents_ExpectTrue()
         {
-            paymentDAO.Setup(d => d.Retrieve()).Returns(75);
-            var actual = paymentProcessor.IsPaymentMade();
+            _paymentDAO.Setup(d => d.Retrieve()).Returns(75);
+            var actual = _paymentProcessor.IsPaymentMade();
 
             Assert.AreEqual(true, actual);
         }
@@ -75,34 +75,34 @@ namespace Tests.Unit.Excella.Vending.Domain
         [Test]
         public void ProcessPayment_WhenPaymentMade_ExpectSavedToDB()
         {
-            paymentDAO.Setup(d => d.SavePayment(It.IsAny<int>())).Verifiable();
-            paymentProcessor.ProcessPayment(25);
-            paymentDAO.Verify(d => d.SavePayment(25), Times.Once);
+            _paymentDAO.Setup(d => d.SavePayment(It.IsAny<int>())).Verifiable();
+            _paymentProcessor.ProcessPayment(25);
+            _paymentDAO.Verify(d => d.SavePayment(25), Times.Once);
         }
 
         [Test]
         public void ProcessPurchase_WhenPurchaseMade_ExpectSavedToDB()
         {
-            paymentProcessor.ProcessPurchase();
-            paymentDAO.Verify(d => d.SavePurchase(), Times.Once);
+            _paymentProcessor.ProcessPurchase();
+            _paymentDAO.Verify(d => d.SavePurchase(), Times.Once);
         }
 
         [Test]
         public void ClearPayment_WhenPaymentHasBeenMade_TellsDaoToClearPayment()
         {
-            paymentDAO.Setup(x => x.Retrieve()).Returns(25);
-            paymentProcessor.ClearPayments();
+            _paymentDAO.Setup(x => x.Retrieve()).Returns(25);
+            _paymentProcessor.ClearPayments();
             
-            paymentDAO.Verify(x=>x.ClearPayments(), Times.Once);
+            _paymentDAO.Verify(x=>x.ClearPayments(), Times.Once);
         }
 
         [Test]
         public void ClearPayment_WhenPaymentHasNotBeenMade_DoesNotTellDaoToClearPayment()
         {
-            paymentDAO.Setup(x => x.Retrieve()).Returns(0);
-            paymentProcessor.ClearPayments();
+            _paymentDAO.Setup(x => x.Retrieve()).Returns(0);
+            _paymentProcessor.ClearPayments();
 
-            paymentDAO.Verify(x => x.ClearPayments(), Times.Never);
+            _paymentDAO.Verify(x => x.ClearPayments(), Times.Never);
         }
     }
 }
