@@ -4,18 +4,18 @@ namespace Excella.Vending.Domain
 {
     public class CoinPaymentProcessor : IPaymentProcessor
     {
-        public int Payment => paymentDAO.Retrieve();
+        public int Payment => _paymentDAO.Retrieve();
 
-        private IPaymentDAO paymentDAO;
+        private IPaymentDAO _paymentDAO;
 
         public CoinPaymentProcessor(IPaymentDAO dao)
         {
-            paymentDAO = dao;
+            _paymentDAO = dao;
         }
 
         public void ProcessPayment(int amount)
         {
-            paymentDAO.SavePayment(amount);
+            _paymentDAO.SavePayment(amount);
         }
 
         public bool IsPaymentMade()
@@ -25,14 +25,14 @@ namespace Excella.Vending.Domain
 
         public void ProcessPurchase()
         {
-            paymentDAO.SavePurchase();
+            _paymentDAO.SavePurchase();
         }
 
         public void ClearPayments()
         {
             if (Payment > 0)
             {
-                paymentDAO.ClearPayments();
+                _paymentDAO.ClearPayments();
             }
         }
     }
