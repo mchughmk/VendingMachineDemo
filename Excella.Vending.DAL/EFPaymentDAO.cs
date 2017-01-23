@@ -4,11 +4,11 @@ namespace Excella.Vending.DAL
 {
     public class EFPaymentDAO : IPaymentDAO
     {
-        private VendingMachineContext context = new VendingMachineContext();
+        private VendingMachineContext _context = new VendingMachineContext();
 
         public int Retrieve()
         {
-            var payment = context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
 
             if (payment != null)
             {
@@ -22,36 +22,36 @@ namespace Excella.Vending.DAL
 
         public void SavePayment(int amount)
         {
-            var payment = context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
 
             if (payment != null)
             {
                 payment.Value += amount;
-                context.SaveChanges();
+                _context.SaveChanges();
             }
         }
 
         public void SavePurchase()
         {
             const int PURCHASE_COST = 50;
-            var payment = context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
 
             if (payment != null)
             {
                 payment.Value -= PURCHASE_COST;
-                context.SaveChanges();
+                _context.SaveChanges();
             }
         }
 
         public void ClearPayments()
         {
             const int PURCHASE_COST = 50;
-            var payment = context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
 
             if (payment != null)
             {
                 payment.Value = 0;
-                context.SaveChanges();
+                _context.SaveChanges();
             }
         }
     }
