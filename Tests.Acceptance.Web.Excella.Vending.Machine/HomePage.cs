@@ -8,7 +8,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         private readonly IWebDriver _browser;
         const string HOME_PAGE_URL = "http://localhost:8484/";
 
-
         public HomePage()
         {
             _browser = new ChromeDriver();
