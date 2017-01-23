@@ -14,10 +14,8 @@ namespace Excella.Vending.DAL
             {
                 return payment.Value;
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
         }
 
         public void SavePayment(int amount)
