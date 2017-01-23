@@ -12,7 +12,7 @@ namespace Excella.Vending.Machine
 
         public VendingMachine(IPaymentProcessor paymentProcessor)
         {
-            this._paymentProcessor = paymentProcessor;
+            _paymentProcessor = paymentProcessor;
         }
 
         public int ReleaseChange()
