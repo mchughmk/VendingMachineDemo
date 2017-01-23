@@ -37,7 +37,7 @@ namespace Excella.Vending.DAL
         {
             using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand(string.Format("UPDATE Payment SET Value = Value + {0} WHERE ID = 1;", payment), connection);
+                SqlCommand command = new SqlCommand($"UPDATE Payment SET Value = Value + {payment} WHERE ID = 1;", connection);
                 connection.Open();
 
                 var rowsChanged = command.ExecuteNonQuery();
