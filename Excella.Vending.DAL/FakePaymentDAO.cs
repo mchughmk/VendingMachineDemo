@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Excella.Vending.DAL
+﻿namespace Excella.Vending.DAL
 {
     public class FakePaymentDAO : IPaymentDAO
     {
