@@ -6,6 +6,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
     public class HomePage
     {
         private readonly IWebDriver _browser;
+        const string HOME_PAGE_URL = "http://localhost:8484/";
 
 
         public HomePage()
@@ -18,7 +19,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             _browser.Close();
             _browser.Dispose();
         }
-        const string HOME_PAGE_URL = "http://localhost:8484/";
         public void Go()
         {
             _browser.Navigate().GoToUrl(HOME_PAGE_URL);
