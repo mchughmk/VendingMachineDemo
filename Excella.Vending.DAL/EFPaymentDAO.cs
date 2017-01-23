@@ -43,7 +43,6 @@ namespace Excella.Vending.DAL
 
         public void ClearPayments()
         {
-            const int PURCHASE_COST = 50;
             var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
 
             if (payment != null)
