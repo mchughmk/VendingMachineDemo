@@ -5,23 +5,23 @@ namespace Excella.Vending.Machine
 {
     public class VendingMachine : IVendingMachine
     {
-        private IPaymentProcessor paymentProcessor;
+        private IPaymentProcessor _paymentProcessor;
 
-        public double Balance { get { return paymentProcessor.Payment; } }
+        public double Balance { get { return _paymentProcessor.Payment; } }
         public string Message { get; set; }
 
         public VendingMachine(IPaymentProcessor paymentProcessor)
         {
-            this.paymentProcessor = paymentProcessor;
+            _paymentProcessor = paymentProcessor;
         }
 
         public int ReleaseChange()
         {
-            var payment = paymentProcessor.Payment;
+            var payment = _paymentProcessor.Payment;
 
             if (payment > 0)
             {
-                paymentProcessor.ClearPayments();
+                _paymentProcessor.ClearPayments();
             }
 
             return payment;
@@ -29,14 +29,14 @@ namespace Excella.Vending.Machine
 
         public void InsertCoin()
         {
-            paymentProcessor.ProcessPayment(25);
+            _paymentProcessor.ProcessPayment(25);
         }
 
         public Product BuyProduct()
         {
-            if (paymentProcessor.IsPaymentMade())
+            if (_paymentProcessor.IsPaymentMade())
             {
-                paymentProcessor.ProcessPurchase();
+                _paymentProcessor.ProcessPurchase();
                 Message = "Enjoy!";
                 return new Product();
             }

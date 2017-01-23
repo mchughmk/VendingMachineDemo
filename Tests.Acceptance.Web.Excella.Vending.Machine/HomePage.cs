@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework.Constraints;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.IE;
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
 {
     public class HomePage
     {
         private readonly IWebDriver _browser;
-
+        const string HOME_PAGE_URL = "http://localhost:8484/";
 
         public HomePage()
         {
@@ -26,7 +18,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             _browser.Close();
             _browser.Dispose();
         }
-        const string HOME_PAGE_URL = "http://localhost:8484/";
         public void Go()
         {
             _browser.Navigate().GoToUrl(HOME_PAGE_URL);
