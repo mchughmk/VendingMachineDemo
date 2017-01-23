@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework.Constraints;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -46,6 +47,32 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             catch (StaleElementReferenceException)
             {
                 return Balance();
+            }
+        }
+
+        public IWebElement ReleaseChangeButton()
+        {
+            IWebElement button = _browser.FindElement(By.Id("releaseChange"));
+            return button;
+        }
+
+        public int ReleasedChange()
+        {
+            try
+            {
+                var element = _browser.FindElement(By.Id("releasedChangeAmount")).Text;
+
+                int changeAmt;
+                if (int.TryParse(element, out changeAmt))
+                {
+                    return changeAmt;
+                }
+
+                return 0;
+            }
+            catch (StaleElementReferenceException)
+            {
+                return ReleasedChange();
             }
         }
     }

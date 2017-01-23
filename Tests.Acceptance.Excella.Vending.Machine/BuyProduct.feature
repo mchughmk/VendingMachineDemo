@@ -5,6 +5,7 @@
 
 Scenario: Buy a product from the vending machine
 	Given I have inserted a quarter 
+	And I have inserted a quarter 
 	When I purchase a product
 	Then I should receive the product
 

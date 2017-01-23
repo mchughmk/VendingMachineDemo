@@ -47,6 +47,34 @@ namespace Tests.Unit.Excella.Vending.Machine
         }
 
         [Test]
+        public void BuyProduct_WhenPaymentMade_CallsPaymentProcessorToProcessPurchase()
+        {
+            paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
+
+            vendingMachine.BuyProduct();
+
+            paymentProcessor.Verify(x=>x.ProcessPurchase(), Times.Once);
+        }
+
+        [Test]
+        public void BuyProduct_WhenPaymentNotMade_CallsPaymentProcessorToProcessPurchase_()
+        {
+            paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
+
+            try
+            {
+                vendingMachine.BuyProduct();
+            }
+            catch (Exception)
+            {
+                // Ignored because we are testing the verification, not the exception
+            }
+
+            paymentProcessor.Verify(x => x.ProcessPurchase(), Times.Never);
+        }
+
+
+        [Test]
         public void BuyProduct_WhenMoneyInserted_ExpectProduct()
         {
             paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
@@ -82,6 +110,23 @@ namespace Tests.Unit.Excella.Vending.Machine
             var message = vendingMachine.Message;
 
             Assert.AreEqual("Enjoy!", message);
+        }
+
+        [Test]
+        public void ReleaseChange_WhenCoinInserted_CallsPaymentProcessorToResetPayment()
+        {
+            paymentProcessor.Setup(x => x.Payment).Returns(25);
+            vendingMachine.ReleaseChange();
+
+            paymentProcessor.Verify(x=>x.ClearPayments(), Times.Once);
+        }
+
+        [Test]
+        public void ReleaseChange_WhenNoCoinInserted_CallsPaymentProcessorToResetPayment()
+        {
+            vendingMachine.ReleaseChange();
+
+            paymentProcessor.Verify(x => x.ClearPayments(), Times.Never);
         }
     }
 }

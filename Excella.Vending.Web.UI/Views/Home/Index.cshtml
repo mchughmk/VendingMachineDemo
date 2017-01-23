@@ -7,5 +7,12 @@
 {
     <p><input id="insertCoin" type="submit" value="Insert Coin" /></p>
 }
+
+@using (Html.BeginForm("ReleaseChange", "Home", FormMethod.Post))
+{
+    <p><input id="releaseChange" type="submit" value="Release Change" /></p>
+}
+
 <div><p id="totalAmount">Balance: <span id="balanceAmount">@ViewBag.Balance</span> cents</p></div>
+<div><p>Released Change: <span id="releasedChangeAmount">@ViewBag.ReleasedChange</span> cents</p></div>
 

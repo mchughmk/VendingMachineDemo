@@ -56,6 +56,11 @@
     </Compile>
     <Compile Include="BuyProductSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReleaseChange.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReleaseChange.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -64,6 +69,10 @@
       <LastGenOutput>BuyProduct.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="ReleaseChange.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReleaseChange.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Excella.Vending.DAL\Excella.Vending.DAL.csproj">

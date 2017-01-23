@@ -20,10 +20,10 @@ namespace Tests.Integration.Excella.Vending.Machine
         public void Setup()
         {
             _transactionScope = new TransactionScope();
-
-            var paymentDAO = new ADOPaymentDAO(_transactionScope);
+            var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             _vendingMachine = new VendingMachine(paymentProcessor);
+            _vendingMachine.ReleaseChange();
         }
 
         [TearDown]
@@ -57,6 +57,19 @@ namespace Tests.Integration.Excella.Vending.Machine
         {
             _vendingMachine.InsertCoin();
 
+            var change = _vendingMachine.ReleaseChange();
+
+            Assert.AreEqual(25, change);
+        }
+
+        [Test]
+        public void ReleaseChange_WhenThreeCoinsAreInsertedAndAProductIsBought_Expect25()
+        {
+            _vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
+
+            _vendingMachine.BuyProduct();
             var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);

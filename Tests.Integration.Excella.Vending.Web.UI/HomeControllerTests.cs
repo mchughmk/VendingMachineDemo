@@ -22,9 +22,8 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         [SetUp]
         public void Setup()
         {
-            _transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew);
-
-            var paymentDAO = new ADOPaymentDAO(_transactionScope);
+            _transactionScope = new TransactionScope();
+            var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             var vendingMachine = new VendingMachine(paymentProcessor);
             _controller = new HomeController(vendingMachine);
@@ -65,6 +64,42 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             action = _controller.Action(c => c.Index());
             result = action.GetActionResult();
             Assert.AreEqual(25, ((ViewResult)result).ViewBag.Balance);
+        }
+
+        [Test]
+        public void ReleaseChange_WithMoneyEntered_ReturnsChange()
+        {
+            // Arrange
+            _controller.InsertCoin();
+
+            // Act
+            var releaseChangeAction = _controller.Action(c => c.ReleaseChange());
+            var result = releaseChangeAction.GetActionResult();
+
+            // Assert
+            Assert.IsInstanceOf<RedirectToRouteResult>(result);
+
+            var homePageAction = _controller.Action(c => c.Index());
+            var homePageResult = homePageAction.GetActionResult();
+            Assert.AreEqual(25, ((ViewResult)homePageResult).ViewBag.ReleasedChange);
+        }
+
+        [Test]
+        public void ReleaseChange_WithMoneyEntered_SetsBalanceToZero()
+        {
+            // Arrange
+            _controller.InsertCoin();
+
+            // Act
+            var releaseChangeAction = _controller.Action(c => c.ReleaseChange());
+            var result = releaseChangeAction.GetActionResult();
+
+            // Assert
+            Assert.IsInstanceOf<RedirectToRouteResult>(result);
+
+            var homePageAction = _controller.Action(c => c.Index());
+            var homePageResult = homePageAction.GetActionResult();
+            Assert.AreEqual(0, ((ViewResult)homePageResult).ViewBag.Balance);
         }
     }
 }

@@ -46,9 +46,27 @@ namespace Tests.Unit.Excella.Vending.Domain
         }
 
         [Test]
-        public void IsPaymentMade_WhenMoney_ExpectTrue()
+        public void IsPaymentMade_WhenLessThan50Cents_ExpectFalse()
         {
             paymentDAO.Setup(d => d.Retrieve()).Returns(25);
+            var actual = paymentProcessor.IsPaymentMade();
+
+            Assert.AreEqual(false, actual);
+        }
+
+        [Test]
+        public void IsPaymentMade_When50Cents_ExpectTrue()
+        {
+            paymentDAO.Setup(d => d.Retrieve()).Returns(50);
+            var actual = paymentProcessor.IsPaymentMade();
+
+            Assert.AreEqual(true, actual);
+        }
+
+        [Test]
+        public void IsPaymentMade_WhenGreaterThan50Cents_ExpectTrue()
+        {
+            paymentDAO.Setup(d => d.Retrieve()).Returns(75);
             var actual = paymentProcessor.IsPaymentMade();
 
             Assert.AreEqual(true, actual);
@@ -57,10 +75,34 @@ namespace Tests.Unit.Excella.Vending.Domain
         [Test]
         public void ProcessPayment_WhenPaymentMade_ExpectSavedToDB()
         {
-            paymentDAO.Setup(d => d.Save(It.IsAny<int>())).Verifiable();
+            paymentDAO.Setup(d => d.SavePayment(It.IsAny<int>())).Verifiable();
             paymentProcessor.ProcessPayment(25);
-            paymentDAO.Verify(d => d.Save(25), Times.Once);
+            paymentDAO.Verify(d => d.SavePayment(25), Times.Once);
+        }
 
+        [Test]
+        public void ProcessPurchase_WhenPurchaseMade_ExpectSavedToDB()
+        {
+            paymentProcessor.ProcessPurchase();
+            paymentDAO.Verify(d => d.SavePurchase(), Times.Once);
+        }
+
+        [Test]
+        public void ClearPayment_WhenPaymentHasBeenMade_TellsDaoToClearPayment()
+        {
+            paymentDAO.Setup(x => x.Retrieve()).Returns(25);
+            paymentProcessor.ClearPayments();
+            
+            paymentDAO.Verify(x=>x.ClearPayments(), Times.Once);
+        }
+
+        [Test]
+        public void ClearPayment_WhenPaymentHasNotBeenMade_DoesNotTellDaoToClearPayment()
+        {
+            paymentDAO.Setup(x => x.Retrieve()).Returns(0);
+            paymentProcessor.ClearPayments();
+
+            paymentDAO.Verify(x => x.ClearPayments(), Times.Never);
         }
     }
 }

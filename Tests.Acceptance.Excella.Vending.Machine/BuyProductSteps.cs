@@ -14,13 +14,14 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         private IVendingMachine _vendingMachine;
         private TransactionScope _transactionScope;
         private Product _product;
+        private int _changeReleased;
 
         [BeforeScenario]
         public void Setup()
         {
-            _transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew);
-
             _product = null;
+            _changeReleased = 0;
+            _transactionScope = new TransactionScope();
             var paymentDAO = new ADOPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
             _vendingMachine = new VendingMachine(paymentProcessor);
@@ -51,6 +52,23 @@ namespace Tests.Acceptance.Excella.Vending.Machine
             }
         }
 
+        [Then(@"I should receive no change")]
+        public void ThenIShouldReceiveNoChange()
+        {
+            Assert.That(_changeReleased, Is.EqualTo(0));
+        }
+
+        [Then(@"I should receive a quarter")]
+        public void ThenIShouldReceiveAQuarter()
+        {
+            Assert.That(_changeReleased, Is.EqualTo(25));
+        }
+
+        [Then(@"I should receive 75 cents")]
+        public void ThenIShouldReceive75Cents()
+        {
+            Assert.That(_changeReleased, Is.EqualTo(75));
+        }
         [Then(@"I should receive the product")]
         public void ThenIShouldReceiveTheProduct()
         {
@@ -62,6 +80,13 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         {
             // Not calling insert coin
         }
+
+        [When(@"I release the change")]
+        public void WhenIReleaseTheChange()
+        {
+            _changeReleased = _vendingMachine.ReleaseChange();
+        }
+
 
         [Then(@"I should not receive a product")]
         public void ThenIShouldNotReceiveAProduct()
