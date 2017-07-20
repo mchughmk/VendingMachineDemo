@@ -33,7 +33,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             var applicationPath = GetApplicationPath(APPLICATION_NAME);
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             var startInfoFileName = programFiles + @"\IIS Express\iisexpress.exe";
-            var startInfoArguments = $"/config:\"{applicationPath}\\..\\..\\..\\.vs\\config\\applicationhost.config\"";
+            var startInfoArguments = string.Format("/config:\"{0}\\..\\..\\..\\.vs\\config\\applicationhost.config\"", applicationPath);
 
             var iisProcess = new Process
             {
