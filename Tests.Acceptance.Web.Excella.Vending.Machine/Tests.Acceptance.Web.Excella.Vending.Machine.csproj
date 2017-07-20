@@ -59,7 +59,6 @@
       <DependentUpon>BuyProduct.feature</DependentUpon>
     </Compile>
     <Compile Include="BuyProductSteps.cs" />
-    <Compile Include="HomePage.cs" />
     <Compile Include="IISExpressTestManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReleaseChange.feature.cs">
