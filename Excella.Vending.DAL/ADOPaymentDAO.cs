@@ -55,7 +55,8 @@ namespace Excella.Vending.DAL
             const int PURCHASE_PRICE = 50;
             using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand($"UPDATE Payment SET Value = Value - {PURCHASE_PRICE} WHERE ID = 1;", connection);
+                var commandText = string.Format("UPDATE Payment SET Value = Value - {0} WHERE ID = 1;", PURCHASE_PRICE);
+                SqlCommand command = new SqlCommand(commandText, connection);
                 connection.Open();
 
                 var rowsChanged = command.ExecuteNonQuery();
