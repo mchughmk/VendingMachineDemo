@@ -1,14 +1,14 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Vending Machine";
 }
 
 <h3>Vending Machine</h3>
-@using (Html.BeginForm("InsertCoin", "Home", FormMethod.Post))
+@using (Html.BeginForm("InsertCoin", "VendingMachine", FormMethod.Post))
 {
     <p><input id="insertCoin" type="submit" value="Insert Coin" /></p>
 }
 
-@using (Html.BeginForm("ReleaseChange", "Home", FormMethod.Post))
+@using (Html.BeginForm("ReleaseChange", "VendingMachine", FormMethod.Post))
 {
     <p><input id="releaseChange" type="submit" value="Release Change" /></p>
 }
