@@ -1,4 +1,6 @@
-﻿using Excella.Vending.DAL;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Excella.Vending.DAL;
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
@@ -6,10 +8,17 @@ using System.Transactions;
 
 namespace Tests.Integration.Excella.Vending.Machine
 {
+    [TestFixtureSource(typeof(PaymentDaoTestCases), "TestCases")]
     public class VendingMachineTests
     {
-        private VendingMachine _efVendingMachine;
+        private VendingMachine _vendingMachine;
+        private readonly IPaymentDAO _injectedPaymentDao;
         private TransactionScope _transactionScope;
+
+        public VendingMachineTests(IPaymentDAO paymentDao)
+        {
+            _injectedPaymentDao = paymentDao;
+        }
 
         [OneTimeSetUp]
         public void FixtureSetup() // Leaving this to demonstrate that it's usually called FixtureSerup
@@ -20,12 +29,10 @@ namespace Tests.Integration.Excella.Vending.Machine
         public void Setup()
         {
             _transactionScope = new TransactionScope();
-            var adoDao = new ADOPaymentDAO();
-            var efDao = new EFPaymentDAO();
-            var efPaymentProcessor = new CoinPaymentProcessor(efDao);
-            var adoPaymentProcessor = new CoinPaymentProcessor(adoDao);
-            _efVendingMachine = new VendingMachine(efPaymentProcessor);
-            _efVendingMachine.ReleaseChange();
+            var paymentProcessor = new CoinPaymentProcessor(_injectedPaymentDao);
+            _vendingMachine = new VendingMachine(paymentProcessor);
+
+            _vendingMachine.ReleaseChange();
         }
 
         [TearDown]
@@ -38,18 +45,18 @@ namespace Tests.Integration.Excella.Vending.Machine
         public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
 
-            var originalBalance = _efVendingMachine.Balance;
+            var originalBalance = _vendingMachine.Balance;
 
-            _efVendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            var currentBalance = _efVendingMachine.Balance;
+            var currentBalance = _vendingMachine.Balance;
             Assert.AreEqual(currentBalance, originalBalance + 25);
         }
 
         [Test]
         public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
         {
-            var change = _efVendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(0, change);
         }
@@ -57,9 +64,9 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void ReleaseChange_WhenOneCoinInserted_Expect25()
         {
-            _efVendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            var change = _efVendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
         }
@@ -67,14 +74,26 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void ReleaseChange_WhenThreeCoinsAreInsertedAndAProductIsBought_Expect25()
         {
-            _efVendingMachine.InsertCoin();
-            _efVendingMachine.InsertCoin();
-            _efVendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            _efVendingMachine.BuyProduct();
-            var change = _efVendingMachine.ReleaseChange();
+            _vendingMachine.BuyProduct();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
+        }
+
+        public class PaymentDaoTestCases
+        {
+            public static IEnumerable<object> TestCases
+            {
+                get
+                {
+                    yield return new EFPaymentDAO();
+                    yield return new ADOPaymentDAO();
+                }
+            }
         }
     }
 }
