@@ -25,26 +25,28 @@ namespace Excella.Vending.Web.UI.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Index(int releasedChange)
+        public ActionResult IndexWithChange(int releasedChange)
         {
             var viewModel = new VendingMachineViewModel
             {
                 Balance = vendingMachine.Balance,
                 ReleasedChange = releasedChange
             };
-            return View(viewModel);
+
+            return View("Index", viewModel);
         }
 
         public ActionResult InsertCoin()
         {
             vendingMachine.InsertCoin();
-            return Index();
+            return RedirectToAction("Index");
         }
 
         public ActionResult ReleaseChange()
         {
             var releasedChange = vendingMachine.ReleaseChange();
-            return Index(releasedChange);
+
+            return RedirectToAction("IndexWithChange", new { ReleasedChange = releasedChange });
         }
     }
 }
