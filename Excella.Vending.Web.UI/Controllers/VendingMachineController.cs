@@ -3,11 +3,11 @@ using System.Web.Mvc;
 
 namespace Excella.Vending.Web.UI.Controllers
 {
-    public class HomeController : Controller
+    public class VendingMachineController : Controller
     {
         private IVendingMachine vendingMachine;
 
-        public HomeController(IVendingMachine vendingMachine)
+        public VendingMachineController(IVendingMachine vendingMachine)
         {
             this.vendingMachine = vendingMachine;
         }

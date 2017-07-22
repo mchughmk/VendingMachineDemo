@@ -12,7 +12,7 @@ namespace Tests.Integration.Excella.Vending.Web.UI
     public class HomeControllerTests
     {
         private TransactionScope _transactionScope;
-        private HomeController _controller;
+        private VendingMachineController _controller;
 
         [OneTimeSetUp]
         public void FixtureSetup()
@@ -27,7 +27,7 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             var efDao = new EFPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(efDao);
             var vendingMachine = new VendingMachine(paymentProcessor);
-            _controller = new HomeController(vendingMachine);
+            _controller = new VendingMachineController(vendingMachine);
         }
 
         [TearDown]
