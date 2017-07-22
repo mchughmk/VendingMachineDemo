@@ -1,4 +1,6 @@
-﻿using Excella.Vending.DAL;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Excella.Vending.DAL;
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
@@ -6,10 +8,17 @@ using System.Transactions;
 
 namespace Tests.Integration.Excella.Vending.Machine
 {
+    [TestFixtureSource(typeof(PaymentDaoTestCases), "TestCases")]
     public class VendingMachineTests
     {
         private VendingMachine _vendingMachine;
+        private readonly IPaymentDAO _injectedPaymentDao;
         private TransactionScope _transactionScope;
+
+        public VendingMachineTests(IPaymentDAO paymentDao)
+        {
+            _injectedPaymentDao = paymentDao;
+        }
 
         [OneTimeSetUp]
         public void FixtureSetup() // Leaving this to demonstrate that it's usually called FixtureSerup
@@ -20,10 +29,9 @@ namespace Tests.Integration.Excella.Vending.Machine
         public void Setup()
         {
             _transactionScope = new TransactionScope();
-            var paymentDAO = new ADOPaymentDAO();
-            var efDao = new EFPaymentDAO();
-            var paymentProcessor = new CoinPaymentProcessor(efDao);
+            var paymentProcessor = new CoinPaymentProcessor(_injectedPaymentDao);
             _vendingMachine = new VendingMachine(paymentProcessor);
+
             _vendingMachine.ReleaseChange();
         }
 
@@ -74,6 +82,18 @@ namespace Tests.Integration.Excella.Vending.Machine
             var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
+        }
+
+        public class PaymentDaoTestCases
+        {
+            public static IEnumerable<object> TestCases
+            {
+                get
+                {
+                    yield return new EFPaymentDAO();
+                    yield return new ADOPaymentDAO();
+                }
+            }
         }
     }
 }
