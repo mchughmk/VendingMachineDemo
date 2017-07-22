@@ -37,7 +37,8 @@ namespace Excella.Vending.DAL
         {
             using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand($"UPDATE Payment SET Value = Value + {payment} WHERE ID = 1;", connection);
+                var sqlCommandString = string.Format("UPDATE Payment SET Value = Value + {0} WHERE ID = 1;", payment);
+                SqlCommand command = new SqlCommand(sqlCommandString, connection);
                 connection.Open();
 
                 var rowsChanged = command.ExecuteNonQuery();
@@ -54,7 +55,8 @@ namespace Excella.Vending.DAL
             const int PURCHASE_PRICE = 50;
             using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand($"UPDATE Payment SET Value = Value - {PURCHASE_PRICE} WHERE ID = 1;", connection);
+                var commandText = string.Format("UPDATE Payment SET Value = Value - {0} WHERE ID = 1;", PURCHASE_PRICE);
+                SqlCommand command = new SqlCommand(commandText, connection);
                 connection.Open();
 
                 var rowsChanged = command.ExecuteNonQuery();
@@ -85,9 +87,9 @@ namespace Excella.Vending.DAL
 
         private SqlConnection GetConnection()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["VendingMachineContext"]?.ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["VendingMachineContext"].ConnectionString;
 
-            return new SqlConnection(connectionString ?? "Server=.;Database=VendingMachine;Trusted_Connection=True;");
+            return new SqlConnection(connectionString);
         }
     }
 }
