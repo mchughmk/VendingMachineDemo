@@ -57,7 +57,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         }
 
         [Test]
-        public void BuyProduct_WhenPaymentNotMade_CallsPaymentProcessorToProcessPurchase_()
+        public void BuyProduct_WhenPaymentNotMade_DoesNotCallPaymentProcessorToProcessPurchase()
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
