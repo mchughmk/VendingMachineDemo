@@ -71,6 +71,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         {
             Assert.That(_changeReleased, Is.EqualTo(75));
         }
+
         [Then(@"I should receive the product")]
         public void ThenIShouldReceiveTheProduct()
         {
@@ -88,7 +89,6 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         {
             _changeReleased = _vendingMachine.ReleaseChange();
         }
-
 
         [Then(@"I should not receive a product")]
         public void ThenIShouldNotReceiveAProduct()
