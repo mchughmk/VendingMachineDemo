@@ -142,12 +142,11 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             {
                 return GetReleasedChange();
             }
-
         }
 
         private void ClickInsertCoinButton()
         {
-            IWebElement button = _browser.FindElement(By.Id("insertCoin"));
+            var button = _browser.FindElement(By.Id("insertCoin"));
             button.Click();
         }
 
@@ -161,7 +160,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             {
                 return GetBalance();
             }
-
         }
     }
 }
