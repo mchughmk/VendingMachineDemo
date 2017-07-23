@@ -10,7 +10,7 @@ using Xania.AspNet.Simulator;
 
 namespace Tests.Integration.Excella.Vending.Web.UI
 {
-    public class HomeControllerTests
+    public class VendingMachineControllerTests
     {
         private TransactionScope _transactionScope;
         private VendingMachineController _controller;
