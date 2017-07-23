@@ -104,7 +104,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         public void GetMessage_WhenMoneyInserted_ExpectEnjoyPrompt()
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
-            var product = _vendingMachine.BuyProduct();
+            _vendingMachine.BuyProduct();
 
             var message = _vendingMachine.Message;
 
