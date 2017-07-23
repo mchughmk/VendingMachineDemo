@@ -73,7 +73,6 @@ namespace Tests.Unit.Excella.Vending.Machine
             _paymentProcessor.Verify(x => x.ProcessPurchase(), Times.Never);
         }
 
-
         [Test]
         public void BuyProduct_WhenMoneyInserted_ExpectProduct()
         {
@@ -91,7 +90,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             try
             {
-                var product = _vendingMachine.BuyProduct();
+                _vendingMachine.BuyProduct();
                 Assert.Fail("BuyProduct with no money did not throw InvalidOperationException");
             }
             catch (InvalidOperationException)
