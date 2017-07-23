@@ -5,7 +5,7 @@ namespace Excella.Vending.Machine
 {
     public class VendingMachine : IVendingMachine
     {
-        private IPaymentProcessor _paymentProcessor;
+        private readonly IPaymentProcessor _paymentProcessor;
 
         public double Balance { get { return _paymentProcessor.Payment; } }
         public string Message { get; set; }
