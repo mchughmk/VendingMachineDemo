@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using Excella.Vending.DAL;
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
@@ -82,18 +81,6 @@ namespace Tests.Integration.Excella.Vending.Machine
             var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
-        }
-
-        public class PaymentDaoTestCases
-        {
-            public static IEnumerable<object> TestCases
-            {
-                get
-                {
-                    yield return new EFPaymentDAO();
-                    yield return new ADOPaymentDAO();
-                }
-            }
         }
     }
 }

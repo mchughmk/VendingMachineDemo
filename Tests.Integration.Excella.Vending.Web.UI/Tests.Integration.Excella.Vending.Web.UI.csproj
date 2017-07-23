@@ -112,7 +112,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HomeControllerTests.cs" />
+    <Compile Include="VendingMachineControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +131,10 @@
     <ProjectReference Include="..\Excella.Vending.Web.UI\Excella.Vending.Web.UI.csproj">
       <Project>{e7f2ecfb-8395-482c-9b75-ff7018b8e7ba}</Project>
       <Name>Excella.Vending.Web.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests.Integration.Excella.Vending.Machine\Tests.Integration.Excella.Vending.Machine.csproj">
+      <Project>{FA89FAF4-3978-4C4B-9455-C906C18B8002}</Project>
+      <Name>Tests.Integration.Excella.Vending.Machine</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

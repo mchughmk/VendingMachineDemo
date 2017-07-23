@@ -6,15 +6,22 @@ using NUnit.Framework;
 using System.Transactions;
 using System.Web.Mvc;
 using Excella.Vending.Web.UI.Models;
+using Tests.Integration.Excella.Vending.Machine;
 using Xania.AspNet.Simulator;
 
 namespace Tests.Integration.Excella.Vending.Web.UI
 {
-    public class HomeControllerTests
+    [TestFixtureSource(typeof(PaymentDaoTestCases), "TestCases")]
+    public class VendingMachineControllerTests
     {
         private TransactionScope _transactionScope;
         private VendingMachineController _controller;
+        private IPaymentDAO _injectedPaymentDao;
 
+        public VendingMachineControllerTests(IPaymentDAO paymentDao)
+        {
+            _injectedPaymentDao = paymentDao;
+        }
 
         [OneTimeSetUp]
         public void FixtureSetup()
@@ -25,8 +32,7 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         public void Setup()
         {
             _transactionScope = new TransactionScope();
-            var efDao = new EFPaymentDAO();
-            var paymentProcessor = new CoinPaymentProcessor(efDao);
+            var paymentProcessor = new CoinPaymentProcessor(_injectedPaymentDao);
             var vendingMachine = new VendingMachine(paymentProcessor);
             _controller = new VendingMachineController(vendingMachine);
         }
