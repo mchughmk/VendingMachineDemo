@@ -10,7 +10,7 @@ namespace Excella.Vending.Web.UI.Controllers
 
         public VendingMachineController(IVendingMachine vendingMachine)
         {
-            this._vendingMachine = vendingMachine;
+            _vendingMachine = vendingMachine;
         }
 
         public ActionResult Index()
