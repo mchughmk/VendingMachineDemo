@@ -46,10 +46,8 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         [Test]
         public void Index_WhenFirstLoad_ExpectNoBalance()
         {
-            // Act
             _controller.Index();
 
-            // Assert
             var vm = _controller.ViewData.Model as VendingMachineViewModel;
             Assert.That(vm.Balance, Is.EqualTo(0));
         }
@@ -57,10 +55,9 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         [Test]
         public void InsertCoin_WhenCalledOnce_Expect25Balance()
         {
-            // Act
             _controller.InsertCoin();
             _controller.Index();
-            // Assert
+
             var result = _controller.ViewData.Model as VendingMachineViewModel;
             Assert.AreEqual(25, result.Balance);
         }
@@ -68,13 +65,10 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         [Test]
         public void ReleaseChange_WithMoneyEntered_ReturnsChange()
         {
-            // Arrange
             _controller.InsertCoin();
 
-            // Act
             var result = _controller.ReleaseChange() as RedirectToRouteResult;
 
-            // Assert
             Assert.AreEqual("IndexWithChange", result.RouteValues["action"]);
             Assert.AreEqual(25, result.RouteValues["ReleasedChange"]);
         }
@@ -82,10 +76,8 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         [Test]
         public void ReleaseChange_WithMoneyEntered_SetsBalanceToZero()
         {
-            // Arrange
             _controller.InsertCoin();
 
-            // Act
             _controller.ReleaseChange();
             _controller.Index();
 
