@@ -9,7 +9,7 @@ namespace Excella.Vending.Domain
             get { return _paymentDAO.Retrieve(); }
         }
 
-        private IPaymentDAO _paymentDAO;
+        private readonly IPaymentDAO _paymentDAO;
 
         public CoinPaymentProcessor(IPaymentDAO dao)
         {
