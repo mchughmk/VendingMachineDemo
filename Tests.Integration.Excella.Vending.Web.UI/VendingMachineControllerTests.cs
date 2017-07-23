@@ -15,7 +15,7 @@ namespace Tests.Integration.Excella.Vending.Web.UI
     {
         private TransactionScope _transactionScope;
         private VendingMachineController _controller;
-        private IPaymentDAO _injectedPaymentDao;
+        private readonly IPaymentDAO _injectedPaymentDao;
 
         public VendingMachineControllerTests(IPaymentDAO paymentDao)
         {
