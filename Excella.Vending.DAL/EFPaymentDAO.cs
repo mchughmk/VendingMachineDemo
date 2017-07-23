@@ -4,7 +4,7 @@ namespace Excella.Vending.DAL
 {
     public class EFPaymentDAO : IPaymentDAO
     {
-        private VendingMachineContext _context = new VendingMachineContext();
+        private readonly VendingMachineContext _context = new VendingMachineContext();
 
         public int Retrieve()
         {
