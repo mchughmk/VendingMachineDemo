@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Excella.Vending.DAL;
+﻿using Excella.Vending.DAL;
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
@@ -20,8 +19,9 @@ namespace Tests.Integration.Excella.Vending.Machine
         }
 
         [OneTimeSetUp]
-        public void FixtureSetup() // Leaving this to demonstrate that it's usually called FixtureSerup
+        public void FixtureSetup() 
         {
+            // Leaving this to demonstrate that it's often called FixtureSetup
         }
 
         [SetUp]
@@ -43,8 +43,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
-
-            var originalBalance = _vendingMachine.Balance;
+           var originalBalance = _vendingMachine.Balance;
 
             _vendingMachine.InsertCoin();
 

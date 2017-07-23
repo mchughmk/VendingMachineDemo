@@ -4,11 +4,11 @@ namespace Excella.Vending.DAL
 {
     public class EFPaymentDAO : IPaymentDAO
     {
-        private VendingMachineContext _context = new VendingMachineContext();
+        private readonly VendingMachineContext _context = new VendingMachineContext();
 
         public int Retrieve()
         {
-            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.FirstOrDefault(p => p.Id == 1);
 
             if (payment != null)
             {
@@ -20,7 +20,7 @@ namespace Excella.Vending.DAL
 
         public void SavePayment(int amount)
         {
-            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.FirstOrDefault(p => p.Id == 1);
 
             if (payment != null)
             {
@@ -32,7 +32,7 @@ namespace Excella.Vending.DAL
         public void SavePurchase()
         {
             const int PURCHASE_COST = 50;
-            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.FirstOrDefault(p => p.Id == 1);
 
             if (payment != null)
             {
@@ -43,7 +43,7 @@ namespace Excella.Vending.DAL
 
         public void ClearPayments()
         {
-            var payment = _context.Payments.Where(p => p.Id == 1).FirstOrDefault();
+            var payment = _context.Payments.FirstOrDefault(p => p.Id == 1);
 
             if (payment != null)
             {

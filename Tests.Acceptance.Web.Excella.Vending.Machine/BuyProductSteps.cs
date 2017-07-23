@@ -11,7 +11,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
     public class BuyProductSteps
     {
         private IWebDriver _browser;
-        const string HOME_PAGE_URL = "http://localhost:8484/";
+        private const string HOME_PAGE_URL = "http://localhost:8484/";
 
         [BeforeFeature]
         public static void BeforeFeature()
@@ -28,11 +28,11 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [BeforeScenario]
         public void Setup()
         {
-
             if (!IISExpressTestManager.IsIISExpressRunning())
             {
                 throw new Exception("IIS Express must be running for this test to work");
             }
+
             _browser = new ChromeDriver();
 
             GoToHomePage();
@@ -119,7 +119,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private void ClickReleaseChangeButton()
         {
-            IWebElement button = _browser.FindElement(By.Id("releaseChange"));
+            var button = _browser.FindElement(By.Id("releaseChange"));
 
             button.Click();
         }
@@ -142,12 +142,11 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             {
                 return GetReleasedChange();
             }
-
         }
 
         private void ClickInsertCoinButton()
         {
-            IWebElement button = _browser.FindElement(By.Id("insertCoin"));
+            var button = _browser.FindElement(By.Id("insertCoin"));
             button.Click();
         }
 
@@ -161,7 +160,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             {
                 return GetBalance();
             }
-
         }
     }
 }

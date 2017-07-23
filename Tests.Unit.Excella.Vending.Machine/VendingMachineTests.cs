@@ -57,7 +57,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         }
 
         [Test]
-        public void BuyProduct_WhenPaymentNotMade_CallsPaymentProcessorToProcessPurchase_()
+        public void BuyProduct_WhenPaymentNotMade_DoesNotCallPaymentProcessorToProcessPurchase()
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
@@ -72,7 +72,6 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             _paymentProcessor.Verify(x => x.ProcessPurchase(), Times.Never);
         }
-
 
         [Test]
         public void BuyProduct_WhenMoneyInserted_ExpectProduct()
@@ -91,7 +90,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             try
             {
-                var product = _vendingMachine.BuyProduct();
+                _vendingMachine.BuyProduct();
                 Assert.Fail("BuyProduct with no money did not throw InvalidOperationException");
             }
             catch (InvalidOperationException)
@@ -105,7 +104,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         public void GetMessage_WhenMoneyInserted_ExpectEnjoyPrompt()
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
-            var product = _vendingMachine.BuyProduct();
+            _vendingMachine.BuyProduct();
 
             var message = _vendingMachine.Message;
 

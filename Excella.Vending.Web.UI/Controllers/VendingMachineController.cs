@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using Excella.Vending.Machine;
+﻿using Excella.Vending.Machine;
 using System.Web.Mvc;
 using Excella.Vending.Web.UI.Models;
 
@@ -7,18 +6,18 @@ namespace Excella.Vending.Web.UI.Controllers
 {
     public class VendingMachineController : Controller
     {
-        private IVendingMachine vendingMachine;
+        private readonly IVendingMachine _vendingMachine;
 
         public VendingMachineController(IVendingMachine vendingMachine)
         {
-            this.vendingMachine = vendingMachine;
+            _vendingMachine = vendingMachine;
         }
 
         public ActionResult Index()
         {
             var viewModel = new VendingMachineViewModel
             {
-                Balance = vendingMachine.Balance,
+                Balance = _vendingMachine.Balance,
                 ReleasedChange = 0
             };
 
@@ -29,7 +28,7 @@ namespace Excella.Vending.Web.UI.Controllers
         {
             var viewModel = new VendingMachineViewModel
             {
-                Balance = vendingMachine.Balance,
+                Balance = _vendingMachine.Balance,
                 ReleasedChange = releasedChange
             };
 
@@ -38,13 +37,13 @@ namespace Excella.Vending.Web.UI.Controllers
 
         public ActionResult InsertCoin()
         {
-            vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
             return RedirectToAction("Index");
         }
 
         public ActionResult ReleaseChange()
         {
-            var releasedChange = vendingMachine.ReleaseChange();
+            var releasedChange = _vendingMachine.ReleaseChange();
 
             return RedirectToAction("IndexWithChange", new { ReleasedChange = releasedChange });
         }

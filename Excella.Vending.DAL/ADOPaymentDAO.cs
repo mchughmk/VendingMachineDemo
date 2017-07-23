@@ -10,12 +10,12 @@ namespace Excella.Vending.DAL
         {
             using (var connection = GetConnection())
             {
-                int payment = 0;
+                var payment = 0;
 
-                SqlCommand command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
+                var command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                var reader = command.ExecuteReader();
 
                 if (reader.HasRows)
                 {
@@ -38,7 +38,7 @@ namespace Excella.Vending.DAL
             using (var connection = GetConnection())
             {
                 var sqlCommandString = string.Format("UPDATE Payment SET Value = Value + {0} WHERE ID = 1;", payment);
-                SqlCommand command = new SqlCommand(sqlCommandString, connection);
+                var command = new SqlCommand(sqlCommandString, connection);
                 connection.Open();
 
                 var rowsChanged = command.ExecuteNonQuery();
@@ -56,7 +56,7 @@ namespace Excella.Vending.DAL
             using (var connection = GetConnection())
             {
                 var commandText = string.Format("UPDATE Payment SET Value = Value - {0} WHERE ID = 1;", PURCHASE_PRICE);
-                SqlCommand command = new SqlCommand(commandText, connection);
+                var command = new SqlCommand(commandText, connection);
                 connection.Open();
 
                 var rowsChanged = command.ExecuteNonQuery();
@@ -72,22 +72,16 @@ namespace Excella.Vending.DAL
         {
             using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
+                var command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
                 connection.Open();
 
-                var rowsChanged = command.ExecuteNonQuery();
-
-                // TODO: Remove this; we're covered by tests and don't need it
-                if (rowsChanged < 1)
-                {
-                    Console.WriteLine("No rows found.");
-                }
+                command.ExecuteNonQuery();
             }
         }
 
         private SqlConnection GetConnection()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["VendingMachineContext"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["VendingMachineContext"].ConnectionString;
 
             return new SqlConnection(connectionString);
         }

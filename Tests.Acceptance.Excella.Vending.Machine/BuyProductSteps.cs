@@ -19,10 +19,10 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         [BeforeScenario]
         public void Setup()
         {
+            // TODO: Setup acceptance tests to work with both EF and ADO payment DAOs
             _product = null;
             _changeReleased = 0;
             _transactionScope = new TransactionScope();
-            var paymentDAO = new ADOPaymentDAO();
             var efDao = new EFPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(efDao);
             _vendingMachine = new VendingMachine(paymentProcessor);
@@ -71,6 +71,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         {
             Assert.That(_changeReleased, Is.EqualTo(75));
         }
+
         [Then(@"I should receive the product")]
         public void ThenIShouldReceiveTheProduct()
         {
@@ -88,7 +89,6 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         {
             _changeReleased = _vendingMachine.ReleaseChange();
         }
-
 
         [Then(@"I should not receive a product")]
         public void ThenIShouldNotReceiveAProduct()
