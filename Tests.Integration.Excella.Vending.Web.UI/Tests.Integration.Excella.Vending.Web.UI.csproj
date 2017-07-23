@@ -98,18 +98,6 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Xania.AspNet.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xania.AspNet.Simulator.1.4.0-beta5\lib\net45\Xania.AspNet.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xania.AspNet.Razor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xania.AspNet.Simulator.1.4.0-beta5\lib\net45\Xania.AspNet.Razor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xania.AspNet.Simulator, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xania.AspNet.Simulator.1.4.0-beta5\lib\net45\Xania.AspNet.Simulator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VendingMachineControllerTests.cs" />
