@@ -5,6 +5,7 @@ using Excella.Vending.Web.UI.Controllers;
 using NUnit.Framework;
 using System.Transactions;
 using System.Web.Mvc;
+using Excella.Vending.Web.UI.Models;
 using Xania.AspNet.Simulator;
 
 namespace Tests.Integration.Excella.Vending.Web.UI
@@ -13,6 +14,7 @@ namespace Tests.Integration.Excella.Vending.Web.UI
     {
         private TransactionScope _transactionScope;
         private VendingMachineController _controller;
+
 
         [OneTimeSetUp]
         public void FixtureSetup()
@@ -23,7 +25,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         public void Setup()
         {
             _transactionScope = new TransactionScope();
-            var paymentDAO = new ADOPaymentDAO();
             var efDao = new EFPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(efDao);
             var vendingMachine = new VendingMachine(paymentProcessor);
@@ -39,32 +40,23 @@ namespace Tests.Integration.Excella.Vending.Web.UI
         [Test]
         public void Index_WhenFirstLoad_ExpectNoBalance()
         {
-            // Arrange
-            var action = _controller.Action(c => c.Index());
-
             // Act
-            var result = action.GetActionResult();
+            _controller.Index();
 
             // Assert
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual(0, ((ViewResult)result).ViewBag.Balance);
+            var vm = _controller.ViewData.Model as VendingMachineViewModel;
+            Assert.That(vm.Balance, Is.EqualTo(0));
         }
 
         [Test]
         public void InsertCoin_WhenCalledOnce_Expect25Balance()
         {
-            // Arrange
-            var action = _controller.Action(c => c.InsertCoin());
-
             // Act
-            var result = action.GetActionResult();
-
+            _controller.InsertCoin();
+            _controller.Index();
             // Assert
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-
-            action = _controller.Action(c => c.Index());
-            result = action.GetActionResult();
-            Assert.AreEqual(25, ((ViewResult)result).ViewBag.Balance);
+            var result = _controller.ViewData.Model as VendingMachineViewModel;
+            Assert.AreEqual(25, result.Balance);
         }
 
         [Test]
@@ -74,15 +66,11 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             _controller.InsertCoin();
 
             // Act
-            var releaseChangeAction = _controller.Action(c => c.ReleaseChange());
-            var result = releaseChangeAction.GetActionResult();
+            var result = _controller.ReleaseChange() as RedirectToRouteResult;
 
             // Assert
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-
-            var homePageAction = _controller.Action(c => c.Index());
-            var homePageResult = homePageAction.GetActionResult();
-            Assert.AreEqual(25, ((ViewResult)homePageResult).ViewBag.ReleasedChange);
+            Assert.AreEqual("IndexWithChange", result.RouteValues["action"]);
+            Assert.AreEqual(25, result.RouteValues["ReleasedChange"]);
         }
 
         [Test]
@@ -92,15 +80,11 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             _controller.InsertCoin();
 
             // Act
-            var releaseChangeAction = _controller.Action(c => c.ReleaseChange());
-            var result = releaseChangeAction.GetActionResult();
+            _controller.ReleaseChange();
+            _controller.Index();
 
-            // Assert
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-
-            var homePageAction = _controller.Action(c => c.Index());
-            var homePageResult = homePageAction.GetActionResult();
-            Assert.AreEqual(0, ((ViewResult)homePageResult).ViewBag.Balance);
+            var vm = _controller.ViewData.Model as VendingMachineViewModel;
+            Assert.AreEqual(0, vm.Balance);
         }
     }
 }

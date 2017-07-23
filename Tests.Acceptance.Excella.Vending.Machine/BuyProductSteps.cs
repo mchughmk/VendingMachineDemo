@@ -26,6 +26,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
             var efDao = new EFPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(efDao);
             _vendingMachine = new VendingMachine(paymentProcessor);
+            _vendingMachine.ReleaseChange();
         }
 
         [AfterScenario]
