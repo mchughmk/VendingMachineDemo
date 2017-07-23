@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Excella.Vending.DAL;
+﻿using Excella.Vending.DAL;
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
