@@ -11,7 +11,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
     public class BuyProductSteps
     {
         private IWebDriver _browser;
-        const string HOME_PAGE_URL = "http://localhost:8484/";
+        private const string HOME_PAGE_URL = "http://localhost:8484/";
 
         [BeforeFeature]
         public static void BeforeFeature()
