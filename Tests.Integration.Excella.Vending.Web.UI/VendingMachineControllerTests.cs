@@ -7,7 +7,6 @@ using System.Transactions;
 using System.Web.Mvc;
 using Excella.Vending.Web.UI.Models;
 using Tests.Integration.Excella.Vending.Machine;
-using Xania.AspNet.Simulator;
 
 namespace Tests.Integration.Excella.Vending.Web.UI
 {
