@@ -119,7 +119,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private void ClickReleaseChangeButton()
         {
-            IWebElement button = _browser.FindElement(By.Id("releaseChange"));
+            var button = _browser.FindElement(By.Id("releaseChange"));
 
             button.Click();
         }
