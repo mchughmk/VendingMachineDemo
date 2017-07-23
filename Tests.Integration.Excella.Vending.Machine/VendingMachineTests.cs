@@ -43,8 +43,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
-
-            var originalBalance = _vendingMachine.Balance;
+           var originalBalance = _vendingMachine.Balance;
 
             _vendingMachine.InsertCoin();
 
