@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using Excella.Vending.Machine;
+﻿using Excella.Vending.Machine;
 using System.Web.Mvc;
 using Excella.Vending.Web.UI.Models;
 
