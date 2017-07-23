@@ -75,13 +75,7 @@ namespace Excella.Vending.DAL
                 var command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
                 connection.Open();
 
-                var rowsChanged = command.ExecuteNonQuery();
-
-                // TODO: Remove this; we're covered by tests and don't need it
-                if (rowsChanged < 1)
-                {
-                    Console.WriteLine("No rows found.");
-                }
+                command.ExecuteNonQuery();
             }
         }
 
