@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Excella.Vending.Web.UI.Models
+﻿namespace Excella.Vending.Web.UI.Models
 {
     public class VendingMachineViewModel
     {
