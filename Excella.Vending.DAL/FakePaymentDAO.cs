@@ -2,16 +2,27 @@
 {
     public class FakePaymentDAO : IPaymentDAO
     {
-        private int balance;
+        private int _balance;
 
-        public void Save(int amount)
+        public void SavePayment(int amount)
         {
-            balance += amount;
+            _balance += amount;
+        }
+
+        public void SavePurchase()
+        {
+            const int PURCHASE_COST = 50;
+            _balance -= PURCHASE_COST;
+        }
+
+        public void ClearPayments()
+        {
+            _balance = 0;
         }
 
         public int Retrieve()
         {
-            return balance;
+            return _balance;
         }
     }
 }

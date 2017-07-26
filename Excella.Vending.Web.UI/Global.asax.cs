@@ -31,7 +31,7 @@ namespace Excella.Vending.Web.UI
             //Register project abstractions
             builder.RegisterType<VendingMachine>().As<IVendingMachine>();
             builder.RegisterType<CoinPaymentProcessor>().As<IPaymentProcessor>();
-            builder.RegisterType<ADOPaymentDAO>().As<IPaymentDAO>();
+            builder.RegisterType<EFPaymentDAO>().As<IPaymentDAO>();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

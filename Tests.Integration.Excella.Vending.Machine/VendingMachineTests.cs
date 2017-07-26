@@ -2,55 +2,59 @@
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
-using System;
-using System.Data.SqlClient;
 using System.Transactions;
 
 namespace Tests.Integration.Excella.Vending.Machine
 {
+    [TestFixtureSource(typeof(PaymentDaoTestCases), "TestCases")]
     public class VendingMachineTests
     {
-        private VendingMachine vendingMachine;
-        private TransactionScope transactionScope;
+        private VendingMachine _vendingMachine;
+        private readonly IPaymentDAO _injectedPaymentDao;
+        private TransactionScope _transactionScope;
 
-        [TestFixtureSetUp]
-        public void FixtureSetup()
+        public VendingMachineTests(IPaymentDAO paymentDao)
         {
-            ResetDBBalance();
+            _injectedPaymentDao = paymentDao;
+        }
+
+        [OneTimeSetUp]
+        public void FixtureSetup() 
+        {
+            // Leaving this to demonstrate that it's often called FixtureSetup
         }
 
         [SetUp]
         public void Setup()
         {
-            transactionScope = new TransactionScope();
+            _transactionScope = new TransactionScope();
+            var paymentProcessor = new CoinPaymentProcessor(_injectedPaymentDao);
+            _vendingMachine = new VendingMachine(paymentProcessor);
 
-            var paymentDAO = new EFPaymentDAO();
-            var paymentProcessor = new CoinPaymentProcessor(paymentDAO);
-            vendingMachine = new VendingMachine(paymentProcessor);
+            _vendingMachine.ReleaseChange();
         }
 
         [TearDown]
         public void Teardown()
         {
-            transactionScope.Dispose();
+            _transactionScope.Dispose();
         }
 
         [Test]
-        public void InsertCoin_WhenOneCoinInserted_Expect25()
+        public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
-            var currentBalance = GetCurrentDBBalance();
-            Assert.AreEqual(0, currentBalance);
+           var originalBalance = _vendingMachine.Balance;
 
-            vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            currentBalance = GetCurrentDBBalance();
-            Assert.AreEqual(25, currentBalance);
+            var currentBalance = _vendingMachine.Balance;
+            Assert.AreEqual(currentBalance, originalBalance + 25);
         }
 
         [Test]
         public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
         {
-            var change = vendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(0, change);
         }
@@ -58,60 +62,24 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void ReleaseChange_WhenOneCoinInserted_Expect25()
         {
-            vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            var change = vendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
         }
 
-        private SqlConnection GetConnection()
+        [Test]
+        public void ReleaseChange_WhenThreeCoinsAreInsertedAndAProductIsBought_Expect25()
         {
-            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
+            _vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
+            _vendingMachine.InsertCoin();
 
-            return new SqlConnection(connectionString);
-        }
+            _vendingMachine.BuyProduct();
+            var change = _vendingMachine.ReleaseChange();
 
-        private void ResetDBBalance()
-        {
-            var connection = GetConnection();
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
-                connection.Open();
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        private int GetCurrentDBBalance()
-        {
-            var connection = GetConnection();
-            int payment = 0;
-
-            using (connection)
-            {
-                SqlCommand command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        payment = reader.GetInt32(0);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No rows found.");
-                }
-                reader.Close();
-            }
-
-            return payment;
+            Assert.AreEqual(25, change);
         }
     }
 }

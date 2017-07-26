@@ -9,21 +9,21 @@ namespace Tests.Unit.Excella.Vending.Machine
     [TestFixture]
     public class VendingMachineTests
     {
-        private VendingMachine vendingMachine;
-        private Mock<IPaymentProcessor> paymentProcessor;
+        private VendingMachine _vendingMachine;
+        private Mock<IPaymentProcessor> _paymentProcessor;
 
         [SetUp]
         public void Setup()
         {
-            paymentProcessor = new Mock<IPaymentProcessor>();
-            vendingMachine = new VendingMachine(paymentProcessor.Object);
+            _paymentProcessor = new Mock<IPaymentProcessor>();
+            _vendingMachine = new VendingMachine(_paymentProcessor.Object);
         }
 
         [Test]
         public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
         {
-            paymentProcessor.Setup(p => p.Payment).Returns(0);
-            var change = vendingMachine.ReleaseChange();
+            _paymentProcessor.Setup(p => p.Payment).Returns(0);
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(0, change);
         }
@@ -31,27 +31,54 @@ namespace Tests.Unit.Excella.Vending.Machine
         [Test]
         public void ReleaseChange_WhenOneCoinInserted_Expect25()
         {
-            paymentProcessor.Setup(p => p.Payment).Returns(25);
+            _paymentProcessor.Setup(p => p.Payment).Returns(25);
 
-            var change = vendingMachine.ReleaseChange();
+            var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void BuyProduct_WhenNoMoneyInserted_ExpectException()
         {
-            paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
-            var product = vendingMachine.BuyProduct();
+            _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
+
+            Assert.That(()=> _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
+        }
+
+        [Test]
+        public void BuyProduct_WhenPaymentMade_CallsPaymentProcessorToProcessPurchase()
+        {
+            _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
+
+            _vendingMachine.BuyProduct();
+
+            _paymentProcessor.Verify(x=>x.ProcessPurchase(), Times.Once);
+        }
+
+        [Test]
+        public void BuyProduct_WhenPaymentNotMade_DoesNotCallPaymentProcessorToProcessPurchase()
+        {
+            _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
+
+            try
+            {
+                _vendingMachine.BuyProduct();
+            }
+            catch (Exception)
+            {
+                // Ignored because we are testing the verification, not the exception
+            }
+
+            _paymentProcessor.Verify(x => x.ProcessPurchase(), Times.Never);
         }
 
         [Test]
         public void BuyProduct_WhenMoneyInserted_ExpectProduct()
         {
-            paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
+            _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
 
-            var product = vendingMachine.BuyProduct();
+            var product = _vendingMachine.BuyProduct();
 
             Assert.IsNotNull(product);
         }
@@ -59,16 +86,16 @@ namespace Tests.Unit.Excella.Vending.Machine
         [Test]
         public void GetMessage_WhenNoMoneyInserted_ExpectMoneyPrompt()
         {
-            paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
+            _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
             try
             {
-                var product = vendingMachine.BuyProduct();
+                _vendingMachine.BuyProduct();
                 Assert.Fail("BuyProduct with no money did not throw InvalidOperationException");
             }
             catch (InvalidOperationException)
             {
-                var message = vendingMachine.Message;
+                var message = _vendingMachine.Message;
                 Assert.AreEqual("Please insert money", message);
             }
         }
@@ -76,12 +103,29 @@ namespace Tests.Unit.Excella.Vending.Machine
         [Test]
         public void GetMessage_WhenMoneyInserted_ExpectEnjoyPrompt()
         {
-            paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
-            var product = vendingMachine.BuyProduct();
+            _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
+            _vendingMachine.BuyProduct();
 
-            var message = vendingMachine.Message;
+            var message = _vendingMachine.Message;
 
             Assert.AreEqual("Enjoy!", message);
+        }
+
+        [Test]
+        public void ReleaseChange_WhenCoinInserted_CallsPaymentProcessorToResetPayment()
+        {
+            _paymentProcessor.Setup(x => x.Payment).Returns(25);
+            _vendingMachine.ReleaseChange();
+
+            _paymentProcessor.Verify(x=>x.ClearPayments(), Times.Once);
+        }
+
+        [Test]
+        public void ReleaseChange_WhenNoCoinInserted_CallsPaymentProcessorToResetPayment()
+        {
+            _vendingMachine.ReleaseChange();
+
+            _paymentProcessor.Verify(x => x.ClearPayments(), Times.Never);
         }
     }
 }

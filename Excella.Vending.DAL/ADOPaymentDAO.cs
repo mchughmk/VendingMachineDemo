@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.SqlClient;
 
 namespace Excella.Vending.DAL
@@ -7,15 +8,14 @@ namespace Excella.Vending.DAL
     {
         public int Retrieve()
         {
-            var connection = GetConnection();
-            int payment = 0;
-
-            using (connection)
+            using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
+                var payment = 0;
+
+                var command = new SqlCommand("SELECT Value FROM Payment WHERE ID = 1;", connection);
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                var reader = command.ExecuteReader();
 
                 if (reader.HasRows)
                 {
@@ -29,18 +29,16 @@ namespace Excella.Vending.DAL
                     Console.WriteLine("No rows found.");
                 }
                 reader.Close();
+                return payment;
             }
-
-            return payment;
         }
 
-        public void Save(int payment)
+        public void SavePayment(int payment)
         {
-            var connection = GetConnection();
-
-            using (connection)
+            using (var connection = GetConnection())
             {
-                SqlCommand command = new SqlCommand(string.Format("UPDATE Payment SET Value = Value + {0} WHERE ID = 1;", payment), connection);
+                var sqlCommandString = string.Format("UPDATE Payment SET Value = Value + {0} WHERE ID = 1;", payment);
+                var command = new SqlCommand(sqlCommandString, connection);
                 connection.Open();
 
                 var rowsChanged = command.ExecuteNonQuery();
@@ -52,9 +50,38 @@ namespace Excella.Vending.DAL
             }
         }
 
+        public void SavePurchase()
+        {
+            const int PURCHASE_PRICE = 50;
+            using (var connection = GetConnection())
+            {
+                var commandText = string.Format("UPDATE Payment SET Value = Value - {0} WHERE ID = 1;", PURCHASE_PRICE);
+                var command = new SqlCommand(commandText, connection);
+                connection.Open();
+
+                var rowsChanged = command.ExecuteNonQuery();
+
+                if (rowsChanged < 1)
+                {
+                    Console.WriteLine("No rows found.");
+                }
+            }
+        }
+
+        public void ClearPayments()
+        {
+            using (var connection = GetConnection())
+            {
+                var command = new SqlCommand("UPDATE Payment SET Value = 0 WHERE ID = 1;", connection);
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         private SqlConnection GetConnection()
         {
-            var connectionString = "Server=.;Database=VendingMachine;Trusted_Connection=True;";
+            var connectionString = ConfigurationManager.ConnectionStrings["VendingMachineContext"].ConnectionString;
 
             return new SqlConnection(connectionString);
         }

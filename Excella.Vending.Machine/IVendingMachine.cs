@@ -4,7 +4,6 @@
     {
         double Balance { get; }
         string Message { get; set; }
-
         Product BuyProduct();
         void InsertCoin();
         int ReleaseChange();

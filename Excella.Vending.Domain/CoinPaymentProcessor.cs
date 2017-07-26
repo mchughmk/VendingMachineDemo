@@ -6,27 +6,37 @@ namespace Excella.Vending.Domain
     {
         public int Payment
         {
-            get
-            {
-                return paymentDAO.Retrieve();
-            }
+            get { return _paymentDAO.Retrieve(); }
         }
 
-        private IPaymentDAO paymentDAO;
+        private readonly IPaymentDAO _paymentDAO;
 
         public CoinPaymentProcessor(IPaymentDAO dao)
         {
-            paymentDAO = dao;
+            _paymentDAO = dao;
         }
 
         public void ProcessPayment(int amount)
         {
-            paymentDAO.Save(amount);
+            _paymentDAO.SavePayment(amount);
         }
 
         public bool IsPaymentMade()
         {
-            return Payment > 0;
+            return Payment >= 50;
+        }
+
+        public void ProcessPurchase()
+        {
+            _paymentDAO.SavePurchase();
+        }
+
+        public void ClearPayments()
+        {
+            if (Payment > 0)
+            {
+                _paymentDAO.ClearPayments();
+            }
         }
     }
 }
