@@ -61,15 +61,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            try
-            {
-                _vendingMachine.BuyProduct();
-            }
-            catch (Exception)
-            {
-                // Ignored because we are testing the verification, not the exception
-            }
-
+            Assert.That(() => _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
             _paymentProcessor.Verify(x => x.ProcessPurchase(), Times.Never);
         }
 
