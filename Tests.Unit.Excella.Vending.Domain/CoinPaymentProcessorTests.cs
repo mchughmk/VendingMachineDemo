@@ -22,6 +22,7 @@ namespace Tests.Unit.Excella.Vending.Domain
         public void Payment_WhenNoMoney_ExpectBalanceIsZero()
         {
             _paymentDAO.Setup(d => d.Retrieve()).Returns(0);
+
             var balance = _paymentProcessor.Payment;
 
             Assert.AreEqual(0, balance);
