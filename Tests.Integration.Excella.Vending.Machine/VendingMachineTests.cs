@@ -21,7 +21,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         [OneTimeSetUp]
         public void FixtureSetup() 
         {
-            // Leaving this to demonstrate that it's often called FixtureSetup
+            _injectedPaymentDao.ClearPayments();
         }
 
         [SetUp]

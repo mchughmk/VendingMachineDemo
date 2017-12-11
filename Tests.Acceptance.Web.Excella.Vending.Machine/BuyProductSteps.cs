@@ -76,7 +76,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [When(@"I purchase a product")]
         public void WhenIPurchaseAProduct()
         {
-            // TODO 
+            // Need to finish this 
         }
 
         [When(@"I release the change")]
