@@ -75,8 +75,8 @@ namespace Tests.Integration.Excella.Vending.Machine
             _vendingMachine.InsertCoin();
             _vendingMachine.InsertCoin();
             _vendingMachine.InsertCoin();
-
             _vendingMachine.BuyProduct();
+
             var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(25, change);
