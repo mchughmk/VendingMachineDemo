@@ -49,7 +49,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
 
             var vm = _controller.ViewData.Model as VendingMachineViewModel;
 
-            // ReSharper disable once PossibleNullReferenceException -- if it's null the test will fail. 
             Assert.That(vm.Balance, Is.EqualTo(0));
         }
 
@@ -61,7 +60,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
 
             var result = _controller.ViewData.Model as VendingMachineViewModel;
 
-            // ReSharper disable once PossibleNullReferenceException -- if it's null the test will fail. 
             Assert.AreEqual(25, result.Balance);
         }
 
@@ -72,7 +70,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
 
             var result = _controller.ReleaseChange() as RedirectToRouteResult;
 
-            // ReSharper disable once PossibleNullReferenceException -- if it's null the test will fail. 
             Assert.AreEqual("IndexWithChange", result.RouteValues["action"]);
             Assert.AreEqual(25, result.RouteValues["ReleasedChange"]);
         }
@@ -87,7 +84,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
 
             var vm = _controller.ViewData.Model as VendingMachineViewModel;
 
-            // ReSharper disable once PossibleNullReferenceException -- if it's null the test will fail. 
             Assert.AreEqual(0, vm.Balance);
         }
     }
