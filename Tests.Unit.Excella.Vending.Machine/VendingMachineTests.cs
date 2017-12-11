@@ -61,15 +61,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            try
-            {
-                _vendingMachine.BuyProduct();
-            }
-            catch (Exception)
-            {
-                // Ignored because we are testing the verification, not the exception
-            }
-
+            Assert.That(() => _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
             _paymentProcessor.Verify(x => x.ProcessPurchase(), Times.Never);
         }
 
@@ -88,16 +80,9 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            try
-            {
-                _vendingMachine.BuyProduct();
-                Assert.Fail("BuyProduct with no money did not throw InvalidOperationException");
-            }
-            catch (InvalidOperationException)
-            {
-                var message = _vendingMachine.Message;
-                Assert.AreEqual("Please insert money", message);
-            }
+            Assert.That(()=> _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
+
+            Assert.That(_vendingMachine.Message, Is.EqualTo("Please insert money"));
         }
 
         [Test]

@@ -43,14 +43,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         [When(@"I purchase a product")]
         public void WhenIPurchaseAProduct()
         {
-            try
-            {
-                _product = _vendingMachine.BuyProduct();
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine("Product purchase failed: {0}", e.Message);
-            }
+            _product = _vendingMachine.BuyProduct();
         }
 
         [Then(@"I should receive no change")]
