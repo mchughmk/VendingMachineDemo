@@ -55,7 +55,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         private static string GetApplicationPath(string applicationName)
         {
             var solutionFolder = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
-            // ReSharper disable once AssignNullToNotNullAttribute -- test will fail if it's null.
             return Path.Combine(solutionFolder, applicationName);
         }
     }

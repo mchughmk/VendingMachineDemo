@@ -3,7 +3,6 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using TechTalk.SpecFlow;
-// ReSharper disable UnusedMember.Global -- test methods are said to be unused which isn't correct. -SK
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
 {
