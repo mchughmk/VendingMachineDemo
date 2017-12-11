@@ -23,6 +23,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         public void ReleaseChange_WhenNoMoneyInserted_ExpectZero()
         {
             _paymentProcessor.Setup(p => p.Payment).Returns(0);
+
             var change = _vendingMachine.ReleaseChange();
 
             Assert.AreEqual(0, change);
@@ -89,6 +90,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         public void GetMessage_WhenMoneyInserted_ExpectEnjoyPrompt()
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(true);
+
             _vendingMachine.BuyProduct();
 
             var message = _vendingMachine.Message;
@@ -100,6 +102,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         public void ReleaseChange_WhenCoinInserted_CallsPaymentProcessorToResetPayment()
         {
             _paymentProcessor.Setup(x => x.Payment).Returns(25);
+
             _vendingMachine.ReleaseChange();
 
             _paymentProcessor.Verify(x=>x.ClearPayments(), Times.Once);
