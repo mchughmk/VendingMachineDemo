@@ -26,7 +26,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var change = _vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(0, change);
+            Assert.That(change, Is.EqualTo(0));
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var change = _vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(25, change);
+            Assert.That(change, Is.EqualTo(25));
         }
 
         [Test]
