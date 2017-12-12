@@ -42,7 +42,7 @@ namespace Excella.Vending.Machine
             }
 
             Message = "Please insert money";
-            throw new InvalidOperationException();
+            return null;
         }
     }
 }

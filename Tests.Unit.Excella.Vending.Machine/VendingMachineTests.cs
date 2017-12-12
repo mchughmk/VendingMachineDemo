@@ -40,11 +40,11 @@ namespace Tests.Unit.Excella.Vending.Machine
         }
 
         [Test]
-        public void BuyProduct_WhenNoMoneyInserted_ExpectException()
+        public void BuyProduct_WhenNoMoneyInserted_ExpectNull()
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            Assert.That(()=> _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
+            Assert.That(()=> _vendingMachine.BuyProduct(), Is.Null);
         }
 
         [Test]
@@ -62,7 +62,8 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            Assert.That(() => _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
+            _vendingMachine.BuyProduct();
+
             _paymentProcessor.Verify(x => x.ProcessPurchase(), Times.Never);
         }
 
@@ -81,7 +82,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            Assert.That(()=> _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
+            _vendingMachine.BuyProduct();
 
             Assert.That(_vendingMachine.Message, Is.EqualTo("Please insert money"));
         }
