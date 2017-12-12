@@ -82,7 +82,7 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            Assert.That(()=> _vendingMachine.BuyProduct(), Throws.InvalidOperationException);
+            _vendingMachine.BuyProduct();
 
             Assert.That(_vendingMachine.Message, Is.EqualTo("Please insert money"));
         }
