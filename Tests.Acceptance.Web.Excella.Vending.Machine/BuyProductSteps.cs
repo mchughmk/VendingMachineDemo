@@ -145,14 +145,9 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private int GetBalance()
         {
-            try
-            {
-                return int.Parse(_browser.FindElement(By.Id("balanceAmount")).Text);
-            }
-            catch (StaleElementReferenceException)
-            {
-                return GetBalance();
-            }
+            var wait = new WebDriverWait(_browser, TimeSpan.FromSeconds(10));
+            var element = wait.Until(drv => drv.FindElement(By.Id("balanceAmount"))).Text;
+            return int.Parse(element);
         }
     }
 }
