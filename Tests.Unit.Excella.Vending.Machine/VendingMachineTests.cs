@@ -26,7 +26,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var change = _vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(0, change);
+            Assert.That(change, Is.EqualTo(0));
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var change = _vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(25, change);
+            Assert.That(change, Is.EqualTo(25));
         }
 
         [Test]
@@ -44,7 +44,9 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            Assert.That(()=> _vendingMachine.BuyProduct(), Is.Null);
+            var product = _vendingMachine.BuyProduct();
+
+            Assert.That(product, Is.Null);
         }
 
         [Test]
@@ -74,7 +76,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var product = _vendingMachine.BuyProduct();
 
-            Assert.IsNotNull(product);
+            Assert.That(product, Is.Not.Null);
         }
 
         [Test]
@@ -96,7 +98,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var message = _vendingMachine.Message;
 
-            Assert.AreEqual("Enjoy!", message);
+            Assert.That(message, Is.EqualTo("Enjoy!"));
         }
 
         [Test]

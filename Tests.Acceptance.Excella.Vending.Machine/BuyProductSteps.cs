@@ -74,7 +74,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         [Then(@"I should receive the product")]
         public void ThenIShouldReceiveTheProduct()
         {
-            Assert.IsNotNull(_product);
+            Assert.That(_product, Is.Not.Null);
         }
 
         [Given(@"I have not inserted a quarter")]
@@ -92,7 +92,7 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         [Then(@"I should not receive a product")]
         public void ThenIShouldNotReceiveAProduct()
         {
-            Assert.IsNull(_product);
+            Assert.That(_product, Is.Null);
         }
     }
 }

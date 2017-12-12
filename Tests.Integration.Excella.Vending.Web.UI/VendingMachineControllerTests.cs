@@ -58,8 +58,9 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             _controller.Index();
 
             var result = _controller.ViewData.Model as VendingMachineViewModel;
+            var balance = result.Balance;
 
-            Assert.AreEqual(25, result.Balance);
+            Assert.That(balance, Is.EqualTo(25));
         }
 
         [Test]
@@ -68,9 +69,11 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             _controller.InsertCoin();
 
             var result = _controller.ReleaseChange() as RedirectToRouteResult;
+            var actionName = result.RouteValues["action"];
+            var releasedChange = result.RouteValues["ReleasedChange"];
 
-            Assert.AreEqual("IndexWithChange", result.RouteValues["action"]);
-            Assert.AreEqual(25, result.RouteValues["ReleasedChange"]);
+            Assert.That(actionName, Is.EqualTo("IndexWithChange"));
+            Assert.That(releasedChange, Is.EqualTo(25));
         }
 
         [Test]
@@ -82,7 +85,9 @@ namespace Tests.Integration.Excella.Vending.Web.UI
 
             _controller.Index();
             var vm = _controller.ViewData.Model as VendingMachineViewModel;
-            Assert.AreEqual(0, vm.Balance);
+            var balance = vm.Balance;
+
+            Assert.That(balance, Is.EqualTo(0));
         }
     }
 }
