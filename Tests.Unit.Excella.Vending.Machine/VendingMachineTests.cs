@@ -76,7 +76,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var product = _vendingMachine.BuyProduct();
 
-            Assert.IsNotNull(product);
+            Assert.That(product, Is.Not.Null);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Tests.Unit.Excella.Vending.Machine
 
             var message = _vendingMachine.Message;
 
-            Assert.AreEqual("Enjoy!", message);
+            Assert.That(message, Is.EqualTo("Enjoy!"));
         }
 
         [Test]
