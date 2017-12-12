@@ -25,7 +25,7 @@ namespace Tests.Unit.Excella.Vending.Domain
 
             var balance = _paymentProcessor.Payment;
 
-            Assert.AreEqual(0, balance);
+            Assert.That(balance, Is.EqualTo(0));
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Tests.Unit.Excella.Vending.Domain
 
             var balance = _paymentProcessor.Payment;
 
-            Assert.AreEqual(25, balance);
+            Assert.That(balance, Is.EqualTo(25));
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Tests.Unit.Excella.Vending.Domain
 
             var actual = _paymentProcessor.IsPaymentMade();
 
-            Assert.AreEqual(false, actual);
+            Assert.That(actual, Is.False);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace Tests.Unit.Excella.Vending.Domain
 
             var actual = _paymentProcessor.IsPaymentMade();
 
-            Assert.AreEqual(false, actual);
+            Assert.That(actual, Is.False);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace Tests.Unit.Excella.Vending.Domain
 
             var actual = _paymentProcessor.IsPaymentMade();
 
-            Assert.AreEqual(true, actual);
+            Assert.That(actual, Is.True);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Tests.Unit.Excella.Vending.Domain
 
             var actual = _paymentProcessor.IsPaymentMade();
 
-            Assert.AreEqual(true, actual);
+            Assert.That(actual, Is.True);
         }
 
         [Test]
