@@ -48,7 +48,8 @@ namespace Tests.Integration.Excella.Vending.Machine
             _vendingMachine.InsertCoin();
 
             var currentBalance = _vendingMachine.Balance;
-            Assert.AreEqual(currentBalance, originalBalance + 25);
+
+            Assert.That(currentBalance, Is.EqualTo(originalBalance + 25));
         }
 
         [Test]
@@ -56,7 +57,7 @@ namespace Tests.Integration.Excella.Vending.Machine
         {
             var change = _vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(0, change);
+            Assert.That(change, Is.EqualTo(0));
         }
 
         [Test]
@@ -66,7 +67,7 @@ namespace Tests.Integration.Excella.Vending.Machine
 
             var change = _vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(25, change);
+            Assert.That(change, Is.EqualTo(25));
         }
 
         [Test]
@@ -79,7 +80,7 @@ namespace Tests.Integration.Excella.Vending.Machine
 
             var change = _vendingMachine.ReleaseChange();
 
-            Assert.AreEqual(25, change);
+            Assert.That(change, Is.EqualTo(25));
         }
     }
 }
