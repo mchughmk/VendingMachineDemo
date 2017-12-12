@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using TechTalk.SpecFlow;
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
@@ -125,22 +126,15 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private int GetReleasedChange()
         {
-            try
-            {
-                var element = _browser.FindElement(By.Id("releasedChangeAmount")).Text;
+            var wait = new WebDriverWait(_browser, TimeSpan.FromSeconds(10));
 
-                int changeAmt;
-                if (int.TryParse(element, out changeAmt))
-                {
-                    return changeAmt;
-                }
-
-                return 0;
-            }
-            catch (StaleElementReferenceException)
+            var element = wait.Until(drv => drv.FindElement(By.Id("releasedChangeAmount"))).Text;
+            int changeAmt;
+            if (int.TryParse(element, out changeAmt))
             {
-                return GetReleasedChange();
+                return changeAmt;
             }
+            return 0;
         }
 
         private void ClickInsertCoinButton()
@@ -151,14 +145,9 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private int GetBalance()
         {
-            try
-            {
-                return int.Parse(_browser.FindElement(By.Id("balanceAmount")).Text);
-            }
-            catch (StaleElementReferenceException)
-            {
-                return GetBalance();
-            }
+            var wait = new WebDriverWait(_browser, TimeSpan.FromSeconds(10));
+            var element = wait.Until(drv => drv.FindElement(By.Id("balanceAmount"))).Text;
+            return int.Parse(element);
         }
     }
 }
