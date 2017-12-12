@@ -85,7 +85,9 @@ namespace Tests.Integration.Excella.Vending.Web.UI
 
             _controller.Index();
             var vm = _controller.ViewData.Model as VendingMachineViewModel;
-            Assert.AreEqual(0, vm.Balance);
+            var balance = vm.Balance;
+
+            Assert.That(balance, Is.EqualTo(0));
         }
     }
 }
