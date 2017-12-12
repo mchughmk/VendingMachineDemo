@@ -44,7 +44,9 @@ namespace Tests.Unit.Excella.Vending.Machine
         {
             _paymentProcessor.Setup(p => p.IsPaymentMade()).Returns(false);
 
-            Assert.That(()=> _vendingMachine.BuyProduct(), Is.Null);
+            var product = _vendingMachine.BuyProduct();
+
+            Assert.That(product, Is.Null);
         }
 
         [Test]
