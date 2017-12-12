@@ -16,6 +16,14 @@ namespace Tests.Acceptance.Excella.Vending.Machine
         private Product _product;
         private int _changeReleased;
 
+        [BeforeFeature]
+        public static void BeforeFeature()
+        {
+            var efDao = new EFPaymentDAO();
+            var paymentProcessor = new CoinPaymentProcessor(efDao);
+            paymentProcessor.ClearPayments();
+        }
+
         [BeforeScenario]
         public void Setup()
         {
@@ -25,7 +33,6 @@ namespace Tests.Acceptance.Excella.Vending.Machine
             var efDao = new EFPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(efDao);
             _vendingMachine = new VendingMachine(paymentProcessor);
-            _vendingMachine.ReleaseChange();
         }
 
         [AfterScenario]
