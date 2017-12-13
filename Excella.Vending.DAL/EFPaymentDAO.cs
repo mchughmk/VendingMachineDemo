@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Common;
+using System.Linq;
 
 namespace Excella.Vending.DAL
 {

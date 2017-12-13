@@ -6,29 +6,24 @@ using System.Transactions;
 
 namespace Tests.Integration.Excella.Vending.Machine
 {
-    [TestFixtureSource(typeof(PaymentDaoTestCases), "TestCases")]
-    public class VendingMachineTests
+    public class VendingMachineTestsADO
     {
         private VendingMachine _vendingMachine;
-        private readonly IPaymentDAO _injectedPaymentDao;
+        private ADOPaymentDAO _paymentDao = new ADOPaymentDAO();
         private TransactionScope _transactionScope;
-
-        public VendingMachineTests(IPaymentDAO paymentDao)
-        {
-            _injectedPaymentDao = paymentDao;
-        }
 
         [OneTimeSetUp]
         public void FixtureSetup() 
         {
-            _injectedPaymentDao.ClearPayments();
+            _paymentDao.ClearPayments();
         }
 
         [SetUp]
         public void Setup()
         {
+            _paymentDao = new ADOPaymentDAO();
             _transactionScope = new TransactionScope();
-            var paymentProcessor = new CoinPaymentProcessor(_injectedPaymentDao);
+            var paymentProcessor = new CoinPaymentProcessor(_paymentDao);
             _vendingMachine = new VendingMachine(paymentProcessor);
 
             _vendingMachine.ReleaseChange();

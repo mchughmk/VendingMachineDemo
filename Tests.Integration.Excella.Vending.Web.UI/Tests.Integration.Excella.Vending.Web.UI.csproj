@@ -100,7 +100,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VendingMachineControllerTests.cs" />
+    <Compile Include="VendingMachineControllerTestsEF.cs" />
+    <Compile Include="VendingMachineControllerTestsADO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
