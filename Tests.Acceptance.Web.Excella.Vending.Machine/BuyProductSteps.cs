@@ -46,25 +46,29 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
                 throw new Exception("IIS Express must be running for this test to work");
             }
 
-            GoToHomePage();
+            Browser.Navigate().GoToUrl(HOME_PAGE_URL);
         }
 
         [AfterScenario]
         public void Teardown()
         {
-            ClickReleaseChangeButton();
+            var button = Browser.FindElement(By.Id("releaseChange"));
+            button.Click();
         }
 
         [When(@"I insert a Quarter")]
         public void WhenIInsertAQuarter()
         {
-            ClickInsertCoinButton();
+            var button = Browser.FindElement(By.Id("insertCoin"));
+            button.Click();
         }
 
         [Then(@"The balance should be (.*) cents")]
         public void TheBalanceShouldBe(int cents)
         {
-            var balance = GetBalance();
+            var wait = new WebDriverWait(Browser, TimeSpan.FromSeconds(10));
+            var element = wait.Until(drv => drv.FindElement(By.Id("balanceAmount"))).Text;
+            var balance = int.Parse(element);
 
             Assert.That(balance, Is.EqualTo(cents));
         }
@@ -72,7 +76,8 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [Given(@"I have inserted a quarter")]
         public void GivenIHaveInsertedAQuarter()
         {
-            ClickInsertCoinButton();
+            var button = Browser.FindElement(By.Id("insertCoin"));
+            button.Click();
         }
 
         [When("I do not purchase a product")]
@@ -90,13 +95,16 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [When(@"I release the change")]
         public void WhenIReleaseTheChange()
         {
-            ClickReleaseChangeButton();
+            var button = Browser.FindElement(By.Id("releaseChange"));
+            button.Click();
         }
 
         [Then(@"I should receive (.*) cents in change")]
         public void ThenIShouldReceiveXCentsInChange(int cents)
         {
-            var releasedChange = GetReleasedChange();
+            var wait = new WebDriverWait(Browser, TimeSpan.FromSeconds(10));
+            var elementText = wait.Until(drv => drv.FindElement(By.Id("releasedChangeAmount"))).Text;
+            var releasedChange = int.Parse(elementText);
 
             Assert.That(releasedChange, Is.EqualTo(cents));
         }
@@ -118,44 +126,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         public void ThenIShouldNotReceiveAProduct()
         {
             //Assert.IsNull(product);
-        }
-
-        private void GoToHomePage()
-        {
-            Browser.Navigate().GoToUrl(HOME_PAGE_URL);
-        }
-
-        private void ClickReleaseChangeButton()
-        {
-            var button = Browser.FindElement(By.Id("releaseChange"));
-
-            button.Click();
-        }
-
-        private int GetReleasedChange()
-        {
-            var wait = new WebDriverWait(Browser, TimeSpan.FromSeconds(10));
-
-            var element = wait.Until(drv => drv.FindElement(By.Id("releasedChangeAmount"))).Text;
-            int changeAmt;
-            if (int.TryParse(element, out changeAmt))
-            {
-                return changeAmt;
-            }
-            return 0;
-        }
-
-        private void ClickInsertCoinButton()
-        {
-            var button = Browser.FindElement(By.Id("insertCoin"));
-            button.Click();
-        }
-
-        private int GetBalance()
-        {
-            var wait = new WebDriverWait(Browser, TimeSpan.FromSeconds(10));
-            var element = wait.Until(drv => drv.FindElement(By.Id("balanceAmount"))).Text;
-            return int.Parse(element);
         }
     }
 }
