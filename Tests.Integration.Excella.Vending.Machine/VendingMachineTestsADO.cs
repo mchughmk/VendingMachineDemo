@@ -36,13 +36,11 @@ namespace Tests.Integration.Excella.Vending.Machine
         [Test]
         public void InsertCoin_WhenOneCoinInserted_ExpectIncreaseOf25()
         {
-           var originalBalance = _vendingMachine.Balance;
-
             _vendingMachine.InsertCoin();
 
             var currentBalance = _vendingMachine.Balance;
 
-            Assert.That(currentBalance, Is.EqualTo(originalBalance + 25));
+            Assert.That(currentBalance, Is.EqualTo(25));
         }
 
         [Test]
