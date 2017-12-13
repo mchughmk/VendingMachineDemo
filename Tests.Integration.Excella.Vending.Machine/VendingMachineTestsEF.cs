@@ -25,8 +25,6 @@ namespace Tests.Integration.Excella.Vending.Machine
             _paymentDAO = new EFPaymentDAO();
             var paymentProcessor = new CoinPaymentProcessor(_paymentDAO);
             _vendingMachine = new VendingMachine(paymentProcessor);
-
-            _vendingMachine.ReleaseChange();
         }
 
         [TearDown]
