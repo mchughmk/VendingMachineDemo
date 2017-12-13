@@ -7,10 +7,22 @@ using TechTalk.SpecFlow;
 
 namespace Tests.Acceptance.Web.Excella.Vending.Machine
 {
+
     [Binding]
     public class BuyProductSteps
     {
-        private IWebDriver _browser;
+        public static IWebDriver Browser
+        {
+            get
+            {
+                if (!FeatureContext.Current.ContainsKey("browser"))
+                {
+                    FeatureContext.Current["browser"] = new ChromeDriver();
+                }
+                return (IWebDriver)FeatureContext.Current["browser"];
+            }
+        }
+
         private const string HOME_PAGE_URL = "http://localhost:8484/";
 
         [BeforeFeature]
@@ -22,6 +34,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [AfterFeature]
         public static void AfterFeature()
         {
+            Browser.Quit();
             IISExpressTestManager.StopIISExpress();
         }
 
@@ -33,8 +46,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
                 throw new Exception("IIS Express must be running for this test to work");
             }
 
-            _browser = new ChromeDriver();
-
             GoToHomePage();
         }
 
@@ -42,9 +53,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         public void Teardown()
         {
             ClickReleaseChangeButton();
-
-            _browser.Close();
-            _browser.Dispose();
         }
 
         [When(@"I insert a Quarter")]
@@ -114,19 +122,19 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private void GoToHomePage()
         {
-            _browser.Navigate().GoToUrl(HOME_PAGE_URL);
+            Browser.Navigate().GoToUrl(HOME_PAGE_URL);
         }
 
         private void ClickReleaseChangeButton()
         {
-            var button = _browser.FindElement(By.Id("releaseChange"));
+            var button = Browser.FindElement(By.Id("releaseChange"));
 
             button.Click();
         }
 
         private int GetReleasedChange()
         {
-            var wait = new WebDriverWait(_browser, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(Browser, TimeSpan.FromSeconds(10));
 
             var element = wait.Until(drv => drv.FindElement(By.Id("releasedChangeAmount"))).Text;
             int changeAmt;
@@ -139,13 +147,13 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private void ClickInsertCoinButton()
         {
-            var button = _browser.FindElement(By.Id("insertCoin"));
+            var button = Browser.FindElement(By.Id("insertCoin"));
             button.Click();
         }
 
         private int GetBalance()
         {
-            var wait = new WebDriverWait(_browser, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(Browser, TimeSpan.FromSeconds(10));
             var element = wait.Until(drv => drv.FindElement(By.Id("balanceAmount"))).Text;
             return int.Parse(element);
         }
