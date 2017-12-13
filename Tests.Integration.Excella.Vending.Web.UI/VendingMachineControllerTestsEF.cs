@@ -68,7 +68,6 @@ namespace Tests.Integration.Excella.Vending.Web.UI
             var actionName = result.RouteValues["action"];
             var releasedChange = result.RouteValues["ReleasedChange"];
 
-            Assert.That(actionName, Is.EqualTo("IndexWithChange"));
             Assert.That(releasedChange, Is.EqualTo(25));
         }
 
