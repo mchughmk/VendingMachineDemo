@@ -41,11 +41,6 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
         [BeforeScenario]
         public void Setup()
         {
-            if (!IISExpressTestManager.IsIISExpressRunning())
-            {
-                throw new Exception("IIS Express must be running for this test to work");
-            }
-
             Browser.Navigate().GoToUrl(HOME_PAGE_URL);
         }
 
