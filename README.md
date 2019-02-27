@@ -7,19 +7,24 @@ This demo shows a working example of a small project with unit tests at each lev
 To run the project, you'll need to have some basic items set up or installed.
 
 * **Internet.** You'll need an internet connection so that you can restore nuget packages.
-* **Visual Studio**. You'll need Visual Studio to run the examples
-* **SQL Server**. The acceptance tests and web application use a database, which this example assumes is a SQL Server database.
+* **Visual Studio**. You'll need Visual Studio to run the examples (working on a version with .NET core for the future)
+* **SQL Server Express**. The acceptance tests and web application use a database, which this example assumes is a SQL Server database.
 * **Selenium Chrome Driver**. We'll need this to run instances of chrome on our machine.
 
-Using Chocolatey (<http://chocolatey.org>) could be helpful in installing these prerequisites, e.g. then you can run `choco install chromedriver` to install ChromeDriver.
+Using Chocolatey (<http://chocolatey.org>) could be helpful in installing these prerequisites, e.g. then you can run: 
+
+* `choco install chromedriver` to install ChromeDriver
+* `choco install MsSqlServer2014Express` to install SQL Server express.
  
 ## Getting Started
 
 ### Adding the Selenium Chrome Driver to the PATH variable.
 
+If you used chocolatey, this won't be necessary. Otherwise, edit your %PATH% and add a reference to the directory that contains your downloaded chromedriver.exe. 
 
 ### Running the Migration to Deploy the Database
 
+* Open the project in Visual Studio
 * Open the package management console
 * Select `Excella.Vending.DAL` as the default project
 * In the package management console, type `Update-Database` and run.
