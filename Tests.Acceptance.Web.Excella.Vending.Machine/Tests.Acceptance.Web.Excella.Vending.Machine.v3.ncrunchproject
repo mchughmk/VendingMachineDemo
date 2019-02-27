@@ -1,0 +1,10 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <IgnoredTests>
+      <NamedTestSelector>
+        <TestName>Tests.Acceptance.Web.Excella.Vending.Machine.BuyProductFeature.BalanceIsUpdatedOnCoinInsert</TestName>
+      </NamedTestSelector>
+      <AllTestsSelector />
+    </IgnoredTests>
+  </Settings>
+</ProjectConfiguration>

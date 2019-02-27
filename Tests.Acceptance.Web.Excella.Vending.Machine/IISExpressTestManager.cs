@@ -34,6 +34,10 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             var startInfoFileName = programFiles + @"\IIS Express\iisexpress.exe";
             var startInfoArguments = string.Format("/config:\"{0}\\..\\..\\..\\.vs\\config\\applicationhost.config\"", applicationPath);
+            Debug.WriteLine("Application Path: " + applicationPath);
+            Debug.WriteLine("Program Files: " + programFiles);
+            Debug.WriteLine("startInfoFileName: " + startInfoFileName);
+            Debug.WriteLine("startInfoArguments: " + startInfoArguments);
 
             var iisProcess = new Process
             {

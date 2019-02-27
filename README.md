@@ -45,4 +45,13 @@ This is performed by the initial migration, but you can run the following SQL if
 ```
 
 ## Running the tests
-TODO.
+
+You should be able to run tests in the test runner of your choice -- Visual Studio, ReSharper, NCrunch, etc.
+
+### :warning: KNOWN ISSUE: Currently the Chrome-based AATs require Debugging
+
+For some reason, the IIS Express setup appears to refuse connections unless the application is being actively debugged. So rather than running those tests, you may need to "Debug" those tests in order to get them to pass successfully.
+
+### :warning: KNOWN ISSUE: AAT Cleanup
+
+Currently there appears to be an issue where, when running AATs, IIS express is not cleaned up at the end of the tests. This is likely due to the static way we're managing the browser, etc.

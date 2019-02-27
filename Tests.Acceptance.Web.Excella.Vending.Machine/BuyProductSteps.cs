@@ -25,13 +25,13 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
 
         private const string HOME_PAGE_URL = "http://localhost:8484/";
 
-        [BeforeFeature]
+        [BeforeTestRun]
         public static void BeforeFeature()
         {
             IISExpressTestManager.StartIISExpress();
         }
 
-        [AfterFeature]
+        [AfterTestRun]
         public static void AfterFeature()
         {
             Browser.Quit();
