@@ -33,7 +33,7 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             var applicationPath = GetApplicationPath(APPLICATION_NAME);
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             var startInfoFileName = programFiles + @"\IIS Express\iisexpress.exe";
-            var startInfoArguments = string.Format("/config:\"{0}\\..\\..\\..\\.vs\\config\\applicationhost.config\"", applicationPath);
+            var startInfoArguments = string.Format("/config:\"{0}\\..\\.vs\\Excella.Vending\\config\\applicationhost.config\"", applicationPath);
             Debug.WriteLine("Application Path: " + applicationPath);
             Debug.WriteLine("Program Files: " + programFiles);
             Debug.WriteLine("startInfoFileName: " + startInfoFileName);
@@ -56,9 +56,15 @@ namespace Tests.Acceptance.Web.Excella.Vending.Machine
             return Process.GetProcessesByName("iisexpress");
         }
 
+        private static string GetSolutionPath()
+        {
+            return Path.GetDirectoryName(
+                Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)));
+        }
+
         private static string GetApplicationPath(string applicationName)
         {
-            var solutionFolder = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            var solutionFolder = GetSolutionPath();
             return Path.Combine(solutionFolder, applicationName);
         }
     }
