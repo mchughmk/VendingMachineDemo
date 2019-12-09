@@ -5,6 +5,7 @@ using Excella.Vending.Web.UI.Controllers;
 using NUnit.Framework;
 using System.Transactions;
 using Excella.Vending.Web.UI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Tests.Integration.Excella.Vending.Web.UI
 {

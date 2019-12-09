@@ -1,6 +1,6 @@
 ﻿using Excella.Vending.Machine;
-using System.Web.Mvc;
 using Excella.Vending.Web.UI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Excella.Vending.Web.UI.Controllers
 {
