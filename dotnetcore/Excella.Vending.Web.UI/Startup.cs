@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Excella.Vending.DAL;
+using Excella.Vending.Machine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,9 @@ namespace Excella.Vending.Web.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddTransient<IVendingMachine, VendingMachine>();
+            services.AddTransient<IPaymentDAO, EFPaymentDAO>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
