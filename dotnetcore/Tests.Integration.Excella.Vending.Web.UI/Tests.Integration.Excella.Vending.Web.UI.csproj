@@ -9,7 +9,14 @@
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Excella.Vending.DAL\Excella.Vending.DAL.csproj" />
+    <ProjectReference Include="..\Excella.Vending.Domain\Excella.Vending.Domain.csproj" />
+    <ProjectReference Include="..\Excella.Vending.Machine\Excella.Vending.Machine.csproj" />
+    <ProjectReference Include="..\Excella.Vending.Web.UI\Excella.Vending.Web.UI.csproj" />
   </ItemGroup>
 
 </Project>
