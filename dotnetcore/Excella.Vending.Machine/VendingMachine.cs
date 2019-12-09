@@ -1,5 +1,4 @@
 ﻿using Excella.Vending.Domain;
-using System;
 
 namespace Excella.Vending.Machine
 {

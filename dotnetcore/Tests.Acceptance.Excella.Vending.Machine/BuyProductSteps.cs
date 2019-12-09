@@ -2,7 +2,6 @@
 using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using NUnit.Framework;
-using System;
 using System.Transactions;
 using TechTalk.SpecFlow;
 

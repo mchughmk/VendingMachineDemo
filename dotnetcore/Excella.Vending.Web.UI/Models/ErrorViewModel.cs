@@ -1,5 +1,3 @@
-using System;
-
 namespace Excella.Vending.Web.UI.Models
 {
     public class ErrorViewModel
