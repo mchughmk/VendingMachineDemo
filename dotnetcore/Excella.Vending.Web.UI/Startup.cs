@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Excella.Vending.DAL;
+using Excella.Vending.Domain;
 using Excella.Vending.Machine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +29,7 @@ namespace Excella.Vending.Web.UI
             services.AddControllersWithViews();
             services.AddTransient<IVendingMachine, VendingMachine>();
             services.AddTransient<IPaymentDAO, EFPaymentDAO>();
-
+            services.AddTransient<IPaymentProcessor, CoinPaymentProcessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
