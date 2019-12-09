@@ -2,7 +2,6 @@
 using Excella.Vending.Machine;
 using Moq;
 using NUnit.Framework;
-using System;
 
 namespace Tests.Unit.Excella.Vending.Machine
 {
